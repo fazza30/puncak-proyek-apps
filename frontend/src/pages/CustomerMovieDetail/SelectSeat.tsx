@@ -59,6 +59,27 @@ export default function SelectSeat() {
 
 	/**
 	 * ==================================================
+	 * ROW CONFIG
+	 * ==================================================
+	 */
+
+	const rowSeatLimit: Record<
+		string,
+		number
+	> = {
+		A: 16,
+		B: 15,
+		C: 14,
+		D: 16,
+		E: 16,
+		F: 16,
+		G: 16,
+		H: 15,
+		I: 14,
+	};
+
+	/**
+	 * ==================================================
 	 * GET BOOKED SEATS
 	 * ==================================================
 	 */
@@ -109,7 +130,7 @@ export default function SelectSeat() {
 
 	/**
 	 * ==================================================
-	 * GROUP SEATS BY ROW
+	 * GROUP SEATS
 	 * ==================================================
 	 */
 
@@ -139,12 +160,52 @@ export default function SelectSeat() {
 				);
 			}
 
+			Object.keys(
+				rows,
+			).forEach(
+				(row) => {
+					rows[row].sort(
+						(a, b) => {
+							const aNum =
+								Number(
+									a.seat.match(
+										/\d+/,
+									)?.[0],
+								);
+
+							const bNum =
+								Number(
+									b.seat.match(
+										/\d+/,
+									)?.[0],
+								);
+
+							return (
+								aNum -
+								bNum
+							);
+						},
+					);
+
+					rows[row] =
+						rows[
+							row
+						].slice(
+							0,
+							rowSeatLimit[
+								row
+							] ??
+								16,
+						);
+				},
+			);
+
 			return rows;
 		}, [detail.seats]);
 
 	/**
 	 * ==================================================
-	 * HANDLE SELECT SEAT
+	 * HANDLE SELECT
 	 * ==================================================
 	 */
 
@@ -155,7 +216,7 @@ export default function SelectSeat() {
 			isBooked(seat)
 		) {
 			toast.error(
-				"Family seat sudah dipesan",
+				"Couple seat sudah dipesan",
 			);
 
 			return;
@@ -189,7 +250,7 @@ export default function SelectSeat() {
 				!selectedSeat
 			) {
 				toast.error(
-					"Silahkan pilih family seat terlebih dahulu",
+					"Silahkan pilih couple seat terlebih dahulu",
 				);
 
 				return;
@@ -217,12 +278,12 @@ export default function SelectSeat() {
 		};
 
 	return (
-		<div className="relative mx-auto flex min-h-screen w-full flex-col overflow-hidden bg-[radial-gradient(circle_at_top,_#1B1B3A_0%,_#080811_45%,_#000000_100%)] text-white">
+		<div className="relative mx-auto flex min-h-screen w-full flex-col overflow-hidden bg-[#0A0A12] text-white">
 			{/* ================================================== */}
-			{/* CINEMA LIGHT */}
+			{/* BACKGROUND */}
 			{/* ================================================== */}
 
-			<div className="absolute left-1/2 top-[-140px] h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-premiere-purple/30 blur-[140px]" />
+			<div className="absolute left-1/2 top-[-120px] h-[260px] w-[260px] -translate-x-1/2 rounded-full bg-premiere-purple/20 blur-[120px]" />
 
 			{/* ================================================== */}
 			{/* HEADER */}
@@ -233,26 +294,15 @@ export default function SelectSeat() {
 					<button
 						type="button"
 						onClick={() => {
-							dispatch(resetTicket());
+							dispatch(
+								resetTicket(),
+							);
 
-							navigate("/");
+							navigate(
+								"/",
+							);
 						}}
-						className="
-							flex
-							h-12
-							w-12
-							items-center
-							justify-center
-							rounded-full
-							border
-							border-white/10
-							bg-white/10
-							backdrop-blur-xl
-							transition-all
-							duration-300
-							hover:scale-105
-							hover:bg-white
-						"
+						className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 backdrop-blur-md"
 					>
 						<img
 							src="/assets/images/icons/arrow-left.svg"
@@ -261,11 +311,10 @@ export default function SelectSeat() {
 						/>
 					</button>
 
-					<div className="text-center">
-						<p className="mx-auto text-center text-sm font-semibold">
-							Pilih Family Seat
-						</p>
-					</div>
+					<p className="text-sm font-semibold">
+						Pilih Couple
+						Seat
+					</p>
 
 					<div className="w-12" />
 				</div>
@@ -274,36 +323,97 @@ export default function SelectSeat() {
 				{/* SCREEN */}
 				{/* ================================================== */}
 
-				<div className="relative mt-12 flex flex-col items-center">
-					<div className="absolute top-0 h-[160px] w-[80%] rounded-full bg-white/10 blur-3xl" />
+				<div className="mt-10 flex flex-col items-center">
+					<div className="relative w-full max-w-[720px]">
+						<div className="absolute inset-0 rounded-b-[100px] bg-premiere-purple/20 blur-3xl" />
 
-					<div className="relative w-full max-w-[780px] overflow-hidden rounded-t-[999px] border border-white/10 bg-white/5 px-10 py-6 backdrop-blur-2xl">
-						<div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent" />
-
-						<img
-							src="/assets/images/thumbnails/th3.png"
-							className="h-[140px] w-full rounded-t-[999px] object-cover opacity-40"
-							alt="screen"
-						/>
-
-						<div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80" />
+						<div className="relative overflow-hidden rounded-t-[999px] border border-white/10 bg-white/5 px-8 py-5 backdrop-blur-xl">
+							<div className="h-[90px] w-full rounded-t-[999px] bg-gradient-to-b from-white/20 to-transparent" />
+						</div>
 					</div>
 
-					<div className="mt-5 h-[4px] w-[70%] rounded-full bg-gradient-to-r from-transparent via-premiere-purple to-transparent shadow-[0_0_40px_rgba(124,58,237,0.9)]" />
-
-					<p className="mt-4 text-sm font-semibold tracking-[3px] text-white/70">
-						PANGGUNG UTAMA
+					<p className="mt-4 text-sm font-semibold tracking-[3px] text-white/60">
+						PANGGUNG
+						UTAMA
 					</p>
+
+					{/* ================================================== */}
+					{/* LEGEND */}
+					{/* ================================================== */}
+
+					<div className="mt-5 flex items-center justify-center gap-6">
+						<div className="flex items-center gap-2">
+							<div className="h-4 w-4 rounded-md bg-[#D9D6FE]" />
+
+							<p className="text-xs font-semibold text-white/70">
+								Tersedia
+							</p>
+						</div>
+
+						<div className="flex items-center gap-2">
+							<div className="h-4 w-4 rounded-md bg-zinc-700" />
+
+							<p className="text-xs font-semibold text-white/70">
+								Terpesan
+							</p>
+						</div>
+
+						<div className="flex items-center gap-2">
+							<div className="h-4 w-4 rounded-md bg-premiere-purple" />
+
+							<p className="text-xs font-semibold text-white/70">
+								Dipilih
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 
 			{/* ================================================== */}
-			{/* SEATS */}
+			{/* SEAT MAP */}
 			{/* ================================================== */}
 
-			<div className="relative z-10 mt-16 overflow-x-auto px-5 pb-40">
+			<div className="relative mt-12 overflow-x-auto px-5 pb-40">
 				{!isLoading && (
-					<div className="mx-auto flex w-fit flex-col gap-7">
+					<div className="mx-auto flex w-fit flex-col gap-5">
+						{/* ================================================== */}
+						{/* COLUMN NUMBER */}
+						{/* ================================================== */}
+
+						<div className="ml-[50px] flex items-center gap-3">
+							{Array.from({
+								length: 16,
+							}).map(
+								(
+									_,
+									index,
+								) => (
+									<div
+										key={
+											index
+										}
+										className={cn(
+											"flex w-[114px] justify-center text-xs text-white/35",
+											(index +
+												1) %
+												4 ===
+												0 &&
+												"mr-8",
+										)}
+									>
+										{
+											index +
+												1
+										}
+									</div>
+								),
+							)}
+						</div>
+
+						{/* ================================================== */}
+						{/* ROWS */}
+						{/* ================================================== */}
+
 						{Object.entries(
 							groupedSeats,
 						).map(
@@ -315,23 +425,39 @@ export default function SelectSeat() {
 									key={
 										row
 									}
-									className="flex items-center gap-5"
+									className="flex items-center gap-3"
 								>
 									{/* ROW LABEL */}
 
-									<div className="flex h-[110px] w-10 items-center justify-center text-lg font-bold text-white/40">
+									<div className="flex w-8 justify-center text-sm font-semibold text-white/40">
 										{
 											row
 										}
 									</div>
 
-									{/* ROW SEATS */}
+									{/* SEAT ROW */}
 
-									<div className="flex items-center gap-6">
+									<div
+										className={cn(
+											"flex items-center gap-3",
+
+											(row ===
+												"B" ||
+												row ===
+													"H") &&
+												"pl-[60px]",
+
+											(row ===
+												"C" ||
+												row ===
+													"I") &&
+												"pl-[120px]",
+										)}
+									>
 										{seats.map(
 											(
 												item,
-												i,
+												index,
 											) => {
 												const selected =
 													selectedSeat ===
@@ -342,164 +468,338 @@ export default function SelectSeat() {
 														item.seat,
 													);
 
+												const splitSeat =
+													item.seat.split("-");
+
+												const isSingleSeat =
+													splitSeat.length === 1;
+
+												const leftSeat =
+													splitSeat[0];
+
+												const rightSeat =
+													splitSeat[1];
+
 												return (
-													<button
-														key={`${item.seat}-${i}`}
-														type="button"
-														disabled={
-															booked
+													<div
+														key={
+															item.seat
 														}
-														onClick={() =>
-															handleSelectSeat(
-																item.seat,
-															)
-														}
-														className={cn(
-															`
-																group
-																relative
-																h-[110px]
-																w-[138px]
-																overflow-hidden
-																rounded-[34px]
-																border
-																transition-all
-																duration-500
-															`,
-															booked &&
-																`
-																	cursor-not-allowed
-																	border-zinc-800
-																	bg-zinc-900/30
-																	opacity-40
-																`,
-															selected &&
-																`
-																	scale-105
-																	border-premiere-purple
-																	bg-premiere-purple/20
-																	shadow-[0_0_45px_rgba(124,58,237,0.75)]
-																`,
-															!selected &&
-																!booked &&
-																`
-																	border-white/10
-																	bg-white/[0.04]
-																	backdrop-blur-xl
-																	hover:-translate-y-1
-																	hover:border-premiere-purple/60
-																	hover:bg-white/[0.08]
-																`,
-														)}
+														className="flex items-center"
 													>
-														{/* GLOW */}
+														{/* ================================================== */}
+														{/* COUPLE SEAT */}
+														{/* ================================================== */}
+
+														{isSingleSeat ? (
+														/* ================================================== */
+														/* SINGLE SEAT */
+														/* ================================================== */
+
+														<button
+															type="button"
+															disabled={booked}
+															onClick={() =>
+																handleSelectSeat(
+																	item.seat,
+																)
+															}
+															className={cn(
+																`
+																	group
+																	relative
+																	flex
+																	h-[42px]
+																	w-[52px]
+																	items-center
+																	justify-center
+																	rounded-[16px]
+																	border-2
+																	transition-all
+																	duration-300
+																`,
+																selected
+																	? `
+																		scale-105
+																		border-premiere-purple
+																		bg-premiere-purple
+																		shadow-[0_0_20px_rgba(124,58,237,0.8)]
+																	`
+																	: `
+																		border-[#8B5CF6]
+																		bg-[#D9D6FE]
+																		hover:scale-105
+																		hover:bg-[#C4B5FD]
+																	`,
+																booked &&
+																	`
+																		cursor-not-allowed
+																		border-zinc-700
+																		bg-zinc-800/50
+																		opacity-40
+																	`,
+															)}
+														>
+															<div
+																className={cn(
+																	`
+																		absolute
+																		inset-[3px]
+																		rounded-[12px]
+																		border
+																		border-black/10
+																	`,
+																	selected
+																		? "bg-premiere-purple"
+																		: "bg-[#E9E6FF]",
+																)}
+															/>
+
+															<span
+																className={cn(
+																	`
+																		relative
+																		z-10
+																		text-[10px]
+																		font-semibold
+																	`,
+																	selected
+																		? "text-white"
+																		: "text-[#6D28D9]",
+																)}
+															>
+																{leftSeat}
+															</span>
+														</button>
+													) : (
+														/* ================================================== */
+														/* COUPLE SEAT */
+														/* ================================================== */
 
 														<div
 															className={cn(
 																`
-																	absolute
-																	inset-0
-																	opacity-0
-																	transition-all
-																	duration-500
+																	relative
+																	flex
+																	w-[114px]
+																	items-center
+																	justify-between
 																`,
-																selected &&
-																	"opacity-100",
+																booked &&
+																	"opacity-40",
 															)}
 														>
-															<div className="absolute left-1/2 top-1/2 h-[120px] w-[120px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-premiere-purple/40 blur-3xl" />
-														</div>
+															{/* CONNECTOR */}
 
-														{/* ================================================== */}
-														{/* PREMIUM SOFA */}
-														{/* ================================================== */}
+															<div
+																className={cn(
+																	`
+																		absolute
+																		left-1/2
+																		top-1/2
+																		h-[4px]
+																		w-[14px]
+																		-translate-x-1/2
+																		-translate-y-1/2
+																		rounded-full
+																	`,
+																	selected
+																		? "bg-premiere-purple"
+																		: "bg-[#8B5CF6]",
+																)}
+															/>
 
-														<div className="absolute inset-0 flex items-center justify-center">
-															<div className="relative flex items-end gap-[5px]">
-																{/* LEFT */}
+															{/* LEFT */}
 
+															<button
+																type="button"
+																disabled={booked}
+																onClick={() =>
+																	handleSelectSeat(
+																		item.seat,
+																	)
+																}
+																className={cn(
+																	`
+																		group
+																		relative
+																		flex
+																		h-[42px]
+																		w-[52px]
+																		items-center
+																		justify-center
+																		rounded-l-[16px]
+																		border-2
+																		transition-all
+																		duration-300
+																	`,
+																	selected
+																		? `
+																			z-10
+																			scale-105
+																			border-premiere-purple
+																			bg-premiere-purple
+																			shadow-[0_0_20px_rgba(124,58,237,0.8)]
+																		`
+																		: `
+																			border-[#8B5CF6]
+																			bg-[#D9D6FE]
+																			hover:scale-105
+																			hover:bg-[#C4B5FD]
+																		`,
+																	booked &&
+																		`
+																			cursor-not-allowed
+																			border-zinc-700
+																			bg-zinc-800/50
+																		`,
+																)}
+															>
 																<div
 																	className={cn(
 																		`
-																			relative
-																			h-[54px]
-																			w-[46px]
-																			rounded-t-[20px]
-																			rounded-b-[16px]
+																			absolute
+																			inset-[3px]
+																			rounded-l-[12px]
 																			border
-																			border-white/10
-																			bg-gradient-to-b
-																			from-zinc-100
-																			via-zinc-300
-																			to-zinc-500
-																			shadow-inner
-																			transition-all
-																			duration-500
+																			border-black/10
 																		`,
-																		selected &&
-																			`
-																				from-violet-100
-																				via-violet-300
-																				to-premiere-purple
-																				border-premiere-purple
-																			`,
+																		selected
+																			? "bg-premiere-purple"
+																			: "bg-[#E9E6FF]",
 																	)}
-																>
-																	<div className="absolute left-1/2 top-[8px] h-[8px] w-[60%] -translate-x-1/2 rounded-full bg-black/10" />
+																/>
 
-																	<div className="absolute bottom-[-6px] left-1/2 h-[7px] w-[75%] -translate-x-1/2 rounded-full bg-black/40" />
-																</div>
-
-																{/* RIGHT */}
-
-																<div
+																<span
 																	className={cn(
 																		`
 																			relative
-																			h-[54px]
-																			w-[46px]
-																			rounded-t-[20px]
-																			rounded-b-[16px]
-																			border
-																			border-white/10
-																			bg-gradient-to-b
-																			from-zinc-100
-																			via-zinc-300
-																			to-zinc-500
-																			shadow-inner
-																			transition-all
-																			duration-500
+																			z-10
+																			text-[10px]
+																			font-semibold
 																		`,
-																		selected &&
-																			`
-																				from-violet-100
-																				via-violet-300
-																				to-premiere-purple
-																				border-premiere-purple
-																			`,
+																		selected
+																			? "text-white"
+																			: "text-[#6D28D9]",
 																	)}
 																>
-																	<div className="absolute left-1/2 top-[8px] h-[8px] w-[60%] -translate-x-1/2 rounded-full bg-black/10" />
+																	{leftSeat}
+																</span>
+															</button>
 
-																	<div className="absolute bottom-[-6px] left-1/2 h-[7px] w-[75%] -translate-x-1/2 rounded-full bg-black/40" />
-																</div>
-															</div>
+															{/* RIGHT */}
+
+															<button
+																type="button"
+																disabled={booked}
+																onClick={() =>
+																	handleSelectSeat(
+																		item.seat,
+																	)
+																}
+																className={cn(
+																	`
+																		group
+																		relative
+																		flex
+																		h-[42px]
+																		w-[52px]
+																		items-center
+																		justify-center
+																		rounded-r-[16px]
+																		border-2
+																		transition-all
+																		duration-300
+																	`,
+																	selected
+																		? `
+																			z-10
+																			scale-105
+																			border-premiere-purple
+																			bg-premiere-purple
+																			shadow-[0_0_20px_rgba(124,58,237,0.8)]
+																		`
+																		: `
+																			border-[#8B5CF6]
+																			bg-[#D9D6FE]
+																			hover:scale-105
+																			hover:bg-[#C4B5FD]
+																		`,
+																	booked &&
+																		`
+																			cursor-not-allowed
+																			border-zinc-700
+																			bg-zinc-800/50
+																		`,
+																)}
+															>
+																<div
+																	className={cn(
+																		`
+																			absolute
+																			inset-[3px]
+																			rounded-r-[12px]
+																			border
+																			border-black/10
+																		`,
+																		selected
+																			? "bg-premiere-purple"
+																			: "bg-[#E9E6FF]",
+																	)}
+																/>
+
+																<span
+																	className={cn(
+																		`
+																			relative
+																			z-10
+																			text-[10px]
+																			font-semibold
+																		`,
+																		selected
+																			? "text-white"
+																			: "text-[#6D28D9]",
+																	)}
+																>
+																	{rightSeat}
+																</span>
+															</button>
 														</div>
+													)}
 
 														{/* ================================================== */}
-														{/* CONTENT */}
+														{/* AISLE */}
 														{/* ================================================== */}
 
-														<div className="relative z-20 flex h-full flex-col items-center justify-end pb-4">
-															<p className="text-lg font-bold">
-																{item.seat}
-															</p>
+														{(() => {
+															const isSpecialRow =
+																row === "C" ||
+																row === "I";
 
-															<p className="text-[11px] text-white/70">
-																Family Seat
-															</p>
-														</div>
-													</button>
+															const normalAisle =
+																(index + 1) % 4 ===
+																0;
+
+															const specialAisle =
+																[2, 6, 10].includes(
+																	index,
+																);
+
+															const showAisle =
+																isSpecialRow
+																	? specialAisle
+																	: normalAisle;
+
+															return (
+																showAisle &&
+																index !==
+																	seats.length -
+																		1 && (
+																	<div className="w-8" />
+																)
+															);
+														})()}
+													</div>
 												);
 											},
 										)}
@@ -509,93 +809,35 @@ export default function SelectSeat() {
 						)}
 					</div>
 				)}
-
-				{/* ================================================== */}
-				{/* LEGEND */}
-				{/* ================================================== */}
-
-				<div className="mt-14 flex flex-wrap items-center justify-center gap-6">
-					<div className="flex items-center gap-2">
-						<div className="h-4 w-4 rounded-md bg-white" />
-
-						<p className="text-xs font-semibold text-white/70">
-							Tersedia
-						</p>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<div className="h-4 w-4 rounded-md bg-zinc-700" />
-
-						<p className="text-xs font-semibold text-white/70">
-							Terpesan
-						</p>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<div className="h-4 w-4 rounded-md bg-premiere-purple" />
-
-						<p className="text-xs font-semibold text-white/70">
-							Dipilih
-						</p>
-					</div>
-				</div>
 			</div>
 
 			{/* ================================================== */}
 			{/* BOTTOM NAV */}
 			{/* ================================================== */}
 
-			<div className="fixed bottom-5 left-1/2 z-50 w-full max-w-[460px] -translate-x-1/2 px-5">
-				<div
-					className="
-						relative
-						overflow-hidden
-						rounded-[32px]
-						border
-						border-white/10
-						bg-white/[0.08]
-						p-4
-						backdrop-blur-2xl
-					"
-				>
-					<div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent" />
+			<div className="fixed bottom-5 left-1/2 z-50 w-full max-w-[420px] -translate-x-1/2 px-5">
+				<div className="flex items-center justify-between rounded-full border border-white/10 bg-white/10 p-3 pl-6 backdrop-blur-xl">
+					<div>
+						<p className="text-xl font-semibold leading-[30px]">
+							{selectedSeat ??
+								"--"}
+						</p>
 
-					<div className="relative flex items-center justify-between">
-						<div>
-							<p className="text-xl font-semibold leading-[30px]">
-								{selectedSeat ??
-									"--"}
-							</p>
-
-							<p className="mt-1 text-sm text-white/70">
-								1 Family Seat
-							</p>
-						</div>
-
-						<button
-							type="button"
-							onClick={
-								handleContinue
-							}
-							className="
-								rounded-full
-								bg-white
-								px-7
-								py-4
-								font-bold
-								text-black
-								transition-all
-								duration-300
-								hover:scale-105
-								hover:bg-premiere-purple
-								hover:text-white
-							"
-						>
-							<span className="relative z-10">
-								Lanjutkan
-							</span>
-						</button>
+						<p className="text-sm text-white/70">
+							1 Couple
+							Seat
+						</p>
 					</div>
+
+					<button
+						type="button"
+						onClick={
+							handleContinue
+						}
+						className="rounded-full bg-white px-7 py-4 font-bold text-black transition-all duration-300 hover:scale-105 hover:bg-premiere-purple hover:text-white"
+					>
+						Lanjutkan
+					</button>
 				</div>
 			</div>
 		</div>

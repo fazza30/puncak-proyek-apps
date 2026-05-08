@@ -41,10 +41,107 @@ const GENRE_SHOWTIME_MAP: Record<
 const generateSeats = () => {
 	const seats = [];
 
-	const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+	const rows = [
+		"A",
+		"B",
+		"C",
+		"D",
+		"E",
+		"F",
+		"G",
+		"H",
+		"I",
+	];
 
 	for (const row of rows) {
-		for (let i = 1; i <= 10; i += 2) {
+		/**
+		 * =========================================
+		 * ROW B & H
+		 * SINGLE SIDE SEAT
+		 * =========================================
+		 */
+
+		if (
+			row === "B" ||
+			row === "H"
+		) {
+			/**
+			 * LEFT SINGLE
+			 */
+
+			seats.push({
+				seat: `${row}1`,
+				isBooked: false,
+				type: "single",
+			});
+
+			/**
+			 * COUPLE
+			 */
+
+			for (
+				let i = 2;
+				i <= 28;
+				i += 2
+			) {
+				seats.push({
+					seat: `${row}${i}-${row}${i + 1}`,
+					isBooked: false,
+					type: "couple",
+				});
+			}
+
+			/**
+			 * RIGHT SINGLE
+			 */
+
+			seats.push({
+				seat: `${row}30`,
+				isBooked: false,
+				type: "single",
+			});
+
+			continue;
+		}
+
+		/**
+		 * =========================================
+		 * ROW C & I
+		 * 3 - 4 - 4 - 3
+		 * =========================================
+		 */
+
+		if (
+			row === "C" ||
+			row === "I"
+		) {
+			for (
+				let i = 1;
+				i <= 27;
+				i += 2
+			) {
+				seats.push({
+					seat: `${row}${i}-${row}${i + 1}`,
+					isBooked: false,
+					type: "couple",
+				});
+			}
+
+			continue;
+		}
+
+		/**
+		 * =========================================
+		 * NORMAL ROW
+		 * 4 - 4 - 4 - 4
+		 * =========================================
+		 */
+
+		for (
+			let i = 1;
+			i <= 31;
+			i += 2
+		) {
 			seats.push({
 				seat: `${row}${i}-${row}${i + 1}`,
 				isBooked: false,
