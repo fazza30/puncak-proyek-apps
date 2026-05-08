@@ -27,7 +27,7 @@ const TOKEN_EXPIRED_MINUTES = 30;
 const MAX_LOGIN_ATTEMPTS = 5;
 
 // durasi blokir login
-const BLOCK_MINUTES = 15;
+const BLOCK_MINUTES = 5;
 
 /**
  * ==================================================
