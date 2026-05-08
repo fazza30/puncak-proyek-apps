@@ -1,22 +1,27 @@
 import mongoose from "mongoose";
 
-export default function connectDB() {
-    const DATABASE_URL = process.env.DATABASE_URL ?? "";
+export default async function connectDB() {
+	try {
+		const DATABASE_URL =
+			process.env.DATABASE_URL ?? "";
 
-    try {
-        mongoose.connect(DATABASE_URL);
-    } catch (error) {
-        console.log(error);
-        process.exit(1);
-    }
+		await mongoose.connect(
+			DATABASE_URL,
+			{
+				serverSelectionTimeoutMS: 30000,
+				family: 4,
+			},
+		);
 
-    const dbConn = mongoose.connection
+		console.log(
+			`Database connected: ${mongoose.connection.name}`,
+		);
+	} catch (error) {
+		console.log(
+			"MongoDB connection error:",
+			error,
+		);
 
-    dbConn.on("open", (_) => {
-        console.log(`Database connected : ${DATABASE_URL}`);
-    });
-
-    dbConn.on("error", (err) => {
-        console.log(`Connection error : ${err}`);
-    });
+		process.exit(1);
+	}
 }
