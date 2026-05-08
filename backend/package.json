@@ -7,9 +7,9 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "import:users": "tsx src/scripts/importUsers.ts"
   },
   "dependencies": {
@@ -32,6 +32,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.5.2",
     "nodemon": "^3.1.14",
-    "tsx": "^4.21.0"
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   }
 }
