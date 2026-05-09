@@ -68,9 +68,22 @@ export default function CustomerSignIn() {
 	 * ==================================================
 	 */
 	useEffect(() => {
+		/**
+		 * CONNECT
+		 */
+		socket.connect();
+
+		/**
+		 * LISTENER
+		 */
 		socket.on(
 			"active-users",
 			(data) => {
+				console.log(
+					"REALTIME:",
+					data,
+				);
+
 				setActiveUsers(
 					data.activeUsers,
 				);
