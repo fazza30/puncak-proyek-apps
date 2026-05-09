@@ -116,7 +116,7 @@ export const transactionTicket =
 			/**
 			 * ==================================================
 			 * CHECK USER ALREADY BOOKED
-			 * ONLY 1 COUPLE SEAT
+			 * ONLY NON GMAIL LIMITED
 			 * ==================================================
 			 */
 
@@ -125,14 +125,32 @@ export const transactionTicket =
 					{
 						user: userId,
 
-						status:
-							{
-								$ne: "cancelled",
-							},
+						status: {
+							$ne: "cancelled",
+						},
 					},
 				);
 
+			const userEmail =
+				req.user?.email ??
+				"";
+
+			const domain =
+				userEmail.split(
+					"@",
+				)[1];
+
+			const isGmail =
+				domain ===
+				"gmail.com";
+
+			/**
+			 * NON GMAIL
+			 * ONLY 1 TRANSACTION
+			 */
+
 			if (
+				!isGmail &&
 				existingTransaction
 			) {
 				return res
@@ -147,7 +165,6 @@ export const transactionTicket =
 						data: null,
 					});
 			}
-
 			/**
 			 * ==================================================
 			 * CHECK SEAT ALREADY BOOKED
