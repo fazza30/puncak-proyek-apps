@@ -43,34 +43,59 @@ app.use(
 console.log("CLIENT_URL:", process.env.CLIENT_URL);
 console.log("ALLOWED_ORIGINS:", allowedOrigins);
 
-connectDB();
-
 /**
- * RESET EXPIRED SESSION
+ * ==================================================
+ * START SERVER
+ * ==================================================
  */
-const resetSessions =
+
+const startServer =
 	async () => {
 		try {
+			/**
+			 * CONNECT DATABASE
+			 */
+			await connectDB();
+
+			/**
+			 * RESET EXPIRED SESSION
+			 */
 			await User.updateMany(
-			{
-				tokenExpiredAt: {
-					$lte: new Date(),
+				{
+					tokenExpiredAt: {
+						$lte: new Date(),
+					},
 				},
-			},
-			{
-				isLoggedIn: false,
-				activeToken: null,
-			},
-		);
+				{
+					isLoggedIn: false,
+					activeToken: null,
+				},
+			);
+
+			console.log(
+				"Expired sessions reset success",
+			);
+
+			/**
+			 * START SERVER
+			 */
+			server.listen(
+				port,
+				() => {
+					console.log(
+						`[server]: Server is running at http://localhost:${port}`,
+					);
+				},
+			);
 		} catch (error) {
 			console.log(
-				"Failed reset sessions:",
+				"Server startup error:",
 				error,
 			);
 		}
 	};
 
-resetSessions();
+startServer();
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Express + TypeScript Server");
@@ -128,10 +153,4 @@ io.on("connection", async (socket) => {
 			socket.id,
 		);
 	});
-});
-
-server.listen(port, () => {
-	console.log(
-		`[server]: Server is running at http://localhost:${port}`,
-	);
 });
