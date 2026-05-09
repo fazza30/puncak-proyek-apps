@@ -687,7 +687,7 @@ export const logout =
 	) => {
 		try {
 			const userId =
-				req.user?._id;
+				req.user?.id;
 
 			if (
 				!userId
