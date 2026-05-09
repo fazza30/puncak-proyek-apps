@@ -19,7 +19,7 @@ import type { Genre } from "@/services/genre/genre.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Save } from "lucide-react";
-import React from "react";
+
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { toast } from "sonner";

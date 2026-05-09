@@ -9,7 +9,7 @@ import type { Movie } from "@/services/movie/movie.type";
 import type { Theater } from "@/services/theater/theater.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import React from "react";
+
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { toast } from "sonner";

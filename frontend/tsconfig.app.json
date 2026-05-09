@@ -21,11 +21,11 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
 
-		"baseUrl": ".",
+		// "baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"ignoreDeprecations": "6.0"
+		// "ignoreDeprecations": "6.0"
 	},
 	"include": ["src"]
 }

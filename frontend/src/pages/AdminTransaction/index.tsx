@@ -1,6 +1,6 @@
 import TitleHeading from "@/components/TitleHeading";
 import { DataTable } from "@/components/ui/data-table";
-import React from "react";
+
 import { columns } from "./columns";
 import { useLoaderData } from "react-router-dom";
 import type { Transaction } from "@/services/customer/customer.type";

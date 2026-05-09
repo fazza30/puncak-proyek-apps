@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 export interface FilterState {
 	availbility?: boolean;
 	city?: string;
-	// genre?: string;
+	genre?: string;
 	theaters?: string[];
 }
 

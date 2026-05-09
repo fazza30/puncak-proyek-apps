@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/ui/data-table";
-import React from "react";
+
 import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Link, useLoaderData } from "react-router-dom";

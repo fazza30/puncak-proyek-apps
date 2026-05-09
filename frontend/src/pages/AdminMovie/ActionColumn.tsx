@@ -3,7 +3,7 @@ import { deleteGenre } from "@/services/genre/genre.service";
 import { deleteMovie } from "@/services/movie/movie.service";
 import { useMutation } from "@tanstack/react-query";
 import { Edit, Trash } from "lucide-react";
-import React from "react";
+
 import { Link, useRevalidator } from "react-router-dom";
 import { toast } from "sonner";
 
