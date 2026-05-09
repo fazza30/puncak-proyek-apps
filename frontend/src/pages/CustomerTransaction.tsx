@@ -389,7 +389,7 @@ export default function CustomerTransaction() {
 	return (
 		<div
 			id="Content-Container"
-			className="relative mx-auto flex min-h-screen w-full max-w-[clamp(320px,100%,1200px)] flex-col overflow-x-hidden bg-[linear-gradient(179.86deg,_#000000_40.82%,_#0E0E24_99.88%)] text-white"
+			className="relative flex flex-col w-full min-h-screen bg-[linear-gradient(90deg,_#000000_40.82%,_#0E0E24_99.88%)] text-white overflow-x-hidden"
 		>
 			{/* ================================================== */}
 			{/* HEADER */}

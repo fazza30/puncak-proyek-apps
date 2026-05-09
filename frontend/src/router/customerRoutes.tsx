@@ -87,11 +87,11 @@ const customerRoutes: RouteObject[] =
 		 * AUTH
 		 */
 
-		{
-			path: "/sign-up",
-			element:
-				<CustomerSignUp />,
-		},
+		// {
+		// 	path: "/sign-up",
+		// 	element:
+		// 		<CustomerSignUp />,
+		// },
 
 		{
 			path: "/sign-in",

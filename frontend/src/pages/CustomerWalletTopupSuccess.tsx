@@ -4,7 +4,7 @@ export default function CustomerWalletTopupSuccess() {
 	return (
 		<div
 			id="Content-Container"
-			className="relative flex flex-col w-full max-w-[clamp(320px,100%,1200px)] min-h-screen mx-auto bg-[linear-gradient(179.86deg,_#000000_40.82%,_#0E0E24_99.88%)] overflow-x-hidden text-white"
+			className="relative flex flex-col w-full min-h-screen bg-[linear-gradient(90deg,_#000000_40.82%,_#0E0E24_99.88%)] text-white overflow-x-hidden"
 		>
 			<div className="flex flex-col max-h-screen">
 				<div id="Background" className="relative w-full overflow-hidden">
