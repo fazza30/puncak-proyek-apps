@@ -68,7 +68,7 @@ export default function CustomerTransactionSuccess() {
 				navigate(
 					"/",
 				);
-			}, 60000);
+			}, 3000);
 
 		return () =>
 			clearTimeout(
