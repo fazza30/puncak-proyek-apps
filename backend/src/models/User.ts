@@ -171,7 +171,7 @@ userSchema
 	.get(function () {
 		return `${getAssetUrl(
 			"photos",
-		)}/${this.photo}`;
+		)}${this.photo}`;
 	});
 
 /**
