@@ -247,30 +247,6 @@ export const login =
 				}
 
 				await user.save();
-
-				/**
-				 * ==================================================
-				 * REALTIME ACTIVE USERS
-				 * ==================================================
-				 */
-
-				const activeUsers =
-					await User.countDocuments({
-						role: "customer",
-
-						isLoggedIn: true,
-
-						tokenExpiredAt: {
-							$gt: new Date(),
-						},
-					});
-
-				io.emit("active-users", {
-					activeUsers,
-
-					maxUsers:
-						MAX_ACTIVE_USERS,
-				});
 			}
 
 			/**
@@ -462,6 +438,30 @@ export const login =
 				);
 
 			await user.save();
+
+			/**
+			 * ==================================================
+			 * REALTIME ACTIVE USERS
+			 * ==================================================
+			 */
+
+			const activeUsers =
+				await User.countDocuments({
+					role: "customer",
+
+					isLoggedIn: true,
+
+					tokenExpiredAt: {
+						$gt: new Date(),
+					},
+				});
+
+			io.emit("active-users", {
+				activeUsers,
+
+				maxUsers:
+					MAX_ACTIVE_USERS,
+			});
 
 			return res.json({
 				status:

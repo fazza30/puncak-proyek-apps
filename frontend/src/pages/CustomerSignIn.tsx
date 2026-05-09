@@ -64,45 +64,6 @@ export default function CustomerSignIn() {
 
 	/**
 	 * ==================================================
-	 * SOCKET REALTIME USERS
-	 * ==================================================
-	 */
-	useEffect(() => {
-		/**
-		 * CONNECT
-		 */
-		socket.connect();
-
-		/**
-		 * LISTENER
-		 */
-		socket.on(
-			"active-users",
-			(data) => {
-				console.log(
-					"REALTIME:",
-					data,
-				);
-
-				setActiveUsers(
-					data.activeUsers,
-				);
-
-				setMaxUsers(
-					data.maxUsers,
-				);
-			},
-		);
-
-		return () => {
-			socket.off(
-				"active-users",
-			);
-		};
-	}, []);
-
-	/**
-	 * ==================================================
 	 * GET ACTIVE USERS
 	 * ==================================================
 	 */
@@ -215,6 +176,54 @@ export default function CustomerSignIn() {
 			}
 		};
 
+	/**
+	 * ==================================================
+	 * REALTIME ACTIVE USERS
+	 * ==================================================
+	 */
+	useEffect(() => {
+		/**
+		 * CONNECT SOCKET
+		 */
+		if (!socket.connected) {
+			socket.connect();
+		}
+
+		/**
+		 * RECEIVE REALTIME
+		 */
+		const handleActiveUsers =
+			(data: any) => {
+				console.log(
+					"ACTIVE USERS:",
+					data,
+				);
+
+				setActiveUsers(
+					data.activeUsers,
+				);
+
+				setMaxUsers(
+					data.maxUsers,
+				);
+			};
+
+		socket.on(
+			"active-users",
+			handleActiveUsers,
+		);
+
+		/**
+		 * CLEANUP
+		 */
+		return () => {
+			socket.off(
+				"active-users",
+				handleActiveUsers,
+			);
+		};
+	}, []);
+	
 	return (
 		<div
 			id="Content-Container"
