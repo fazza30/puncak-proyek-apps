@@ -3,10 +3,5 @@ export const getImageUrl = (
 ) => {
 	if (!path) return "";
 
-	const cleanPath =
-		path.startsWith("/")
-			? path
-			: `/${path}`;
-
-	return `${import.meta.env.VITE_API_URL}${cleanPath}`;
+	return `${import.meta.env.VITE_API_URL}${path}`;
 };
