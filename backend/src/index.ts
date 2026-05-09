@@ -23,7 +23,11 @@ app.use(express.static("public"));
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        origin.includes("vercel.app") ||
+        origin === "http://localhost:5173"
+      ) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
