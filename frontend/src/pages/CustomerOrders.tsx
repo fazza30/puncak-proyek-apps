@@ -1,4 +1,5 @@
 import BottomBar from "@/components/BottomBar";
+import { getImageUrl } from "@/lib/image";
 import { dateFormat } from "@/lib/utils";
 import type { Transaction } from "@/services/transaction/transaction.type";
 import { Link, useLoaderData } from "react-router-dom";
@@ -23,7 +24,7 @@ export default function CustomerOrders() {
 							<div className="flex items-center gap-[14px]">
 								<div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
 									<img
-										src={item.movie.thumbnailUrl}
+										src={getImageUrl(item.movie.thumbnailUrl)}
 										className="w-full h-full object-cover"
 										alt="thumbnail"
 									/>

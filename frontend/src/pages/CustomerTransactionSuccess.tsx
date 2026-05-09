@@ -21,6 +21,7 @@ import {
 import {
 	dateFormat,
 } from "@/lib/utils";
+import { getImageUrl } from "@/lib/image";
 
 export default function CustomerTransactionSuccess() {
 	const navigate =
@@ -134,7 +135,9 @@ export default function CustomerTransactionSuccess() {
 								<div className="overflow-hidden rounded-2xl w-20 h-24 bg-white/10">
 									<img
 										src={
-											movie?.thumbnailUrl
+											getImageUrl(
+												movie?.thumbnailUrl
+											)
 										}
 										className="object-cover w-full h-full"
 										alt="movie"

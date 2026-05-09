@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useAppDispatch } from "@/redux/hooks";
 import { setStep } from "@/redux/features/ticket/ticketSlice";
+import { getImageUrl } from "@/lib/image";
 
 export default function DetailMovie() {
 	const [tab, setTab] = useState<"about" | "reviews" | "theaters" | "cast">(
@@ -43,7 +44,7 @@ export default function DetailMovie() {
 			>
 				<div className="absolute w-full h-[169px] top-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_50.2%,rgba(14,14,36,0)_100%)]" />
 				<div className="absolute w-full h-[169px] bottom-0 bg-[linear-gradient(360deg,#000000_6.6%,rgba(14,14,36,0)_99.33%)]" />
-				<img src={detail.thumbnailUrl} alt="background" />
+				<img src={getImageUrl(detail.thumbnailUrl)} alt="background" />
 			</div>
 			<div
 				id="Top-Nav"

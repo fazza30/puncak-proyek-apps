@@ -12,6 +12,7 @@ import {
 } from "@/redux/features/ticket/ticketSlice";
 
 import type { Theater } from "@/services/theater/theater.type";
+import { getImageUrl } from "@/lib/image";
 
 export default function SelectTheater() {
 	const { detail } =
@@ -120,7 +121,9 @@ export default function SelectTheater() {
 						<div className="flex h-[110px] w-[100px] shrink-0 overflow-hidden rounded-2xl bg-[#D9D9D9]">
 							<img
 								src={
-									detail.thumbnailUrl
+									getImageUrl(
+										detail.thumbnailUrl
+									)
 								}
 								className="h-full w-full object-cover"
 								alt="thumbnail"
