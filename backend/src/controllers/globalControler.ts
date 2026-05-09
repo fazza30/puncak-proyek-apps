@@ -161,17 +161,97 @@ const generateSeats = () => {
 
 export const getMovies =
 	async (
-		req: Request,
+		req: any,
 		res: Response,
 	) => {
 		try {
+			/**
+			 * ==================================================
+			 * DOMAIN GENRE MAP
+			 * ==================================================
+			 */
+
+			const DOMAIN_GENRE_MAP: Record<
+				string,
+				string
+			> = {
+				"grade1.com":
+					"Grade 1",
+
+				"grade2.com":
+					"Grade 2",
+
+				"grade3.com":
+					"Grade 3",
+
+				"grade4.com":
+					"Grade 4",
+
+				"grade5.com":
+					"Grade 5",
+			};
+
+			/**
+			 * ==================================================
+			 * GET USER DOMAIN
+			 * ==================================================
+			 */
+
+			const email =
+				req.user?.email ?? "";
+
+			const domain =
+				email.split(
+					"@",
+				)[1];
+
+			const allowedGenre =
+				DOMAIN_GENRE_MAP[
+					domain
+				];
+
+			/**
+			 * ==================================================
+			 * FILTER
+			 * ==================================================
+			 */
+
+			let filter: any =
+				{};
+
+			if (
+				allowedGenre
+			) {
+				const genre =
+					await Genre.findOne(
+						{
+							name:
+								allowedGenre,
+						},
+					);
+
+				if (genre) {
+					filter.genre =
+						genre._id;
+				}
+			}
+
+			/**
+			 * ==================================================
+			 * GET MOVIES
+			 * ==================================================
+			 */
+
 			const movies =
-				await Movie.find()
+				await Movie.find(
+					filter,
+				)
 					.select(
 						"title thumbnail genre available",
 					)
 					.populate({
 						path: "genre",
+
 						select:
 							"name",
 					});
@@ -205,7 +285,6 @@ export const getMovies =
 				});
 		}
 	};
-
 /**
  * ==================================================
  * GET GENRES
