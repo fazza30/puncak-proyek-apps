@@ -58,22 +58,19 @@ const startServer =
 			await connectDB();
 
 			/**
-			 * RESET EXPIRED SESSION
+			 * RESET ALL SESSION
 			 */
 			await User.updateMany(
-				{
-					tokenExpiredAt: {
-						$lte: new Date(),
-					},
-				},
+				{},
 				{
 					isLoggedIn: false,
 					activeToken: null,
+					tokenExpiredAt: null,
 				},
 			);
 
 			console.log(
-				"Expired sessions reset success",
+				"All sessions reset success",
 			);
 
 			/**
