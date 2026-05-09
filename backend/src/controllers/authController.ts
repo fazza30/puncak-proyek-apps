@@ -10,6 +10,7 @@ import User from "../models/User";
 import Wallet from "../models/Wallet";
 
 import { authSchema } from "../utils/zodSchema";
+import { io } from "../index";
 
 /**
  * ==================================================
@@ -246,6 +247,28 @@ export const login =
 				}
 
 				await user.save();
+
+				/**
+				 * ==================================================
+				 * REALTIME ACTIVE USERS
+				 * ==================================================
+				 */
+
+				const activeUsers =
+					await User.countDocuments({
+						role: "customer",
+
+						isLoggedIn: true,
+
+						tokenExpiredAt: {
+							$gt: new Date(),
+						},
+					});
+
+				io.emit("active-users", {
+					activeUsers,
+					maxUsers: MAX_ACTIVE_USERS,
+				});
 
 				return res
 					.status(
@@ -691,6 +714,28 @@ export const logout =
 						null,
 				},
 			);
+
+			/**
+			 * ==================================================
+			 * REALTIME ACTIVE USERS
+			 * ==================================================
+			 */
+
+			const activeUsers =
+				await User.countDocuments({
+					role: "customer",
+
+					isLoggedIn: true,
+
+					tokenExpiredAt: {
+						$gt: new Date(),
+					},
+				});
+
+			io.emit("active-users", {
+				activeUsers,
+				maxUsers: MAX_ACTIVE_USERS,
+			});
 
 			return res.json({
 				status:

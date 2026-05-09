@@ -41,6 +41,8 @@ import {
 	clearSession,
 } from "@/lib/utils";
 
+import { socket } from "@/lib/socket";
+
 export default function CustomerSignIn() {
 	/**
 	 * ==================================================
@@ -62,43 +64,29 @@ export default function CustomerSignIn() {
 
 	/**
 	 * ==================================================
-	 * AUTO CHECK SESSION
+	 * SOCKET REALTIME USERS
 	 * ==================================================
 	 */
 	useEffect(() => {
-		try {
-			/**
-			 * remove expired session
-			 */
-			if (
-				!isAuthenticated()
-			) {
-				clearSession();
-
-				return;
-			}
-
-			const session =
-				getSession();
-
-			/**
-			 * customer redirect
-			 */
-			if (
-				session?.role ===
-				"customer"
-			) {
-				navigate(
-					"/",
-					{
-						replace: true,
-					},
+		socket.on(
+			"active-users",
+			(data) => {
+				setActiveUsers(
+					data.activeUsers,
 				);
-			}
-		} catch {
-			clearSession();
-		}
-	}, [navigate]);
+
+				setMaxUsers(
+					data.maxUsers,
+				);
+			},
+		);
+
+		return () => {
+			socket.off(
+				"active-users",
+			);
+		};
+	}, []);
 
 	/**
 	 * ==================================================
