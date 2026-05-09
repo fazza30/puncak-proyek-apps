@@ -22,6 +22,7 @@ import {
 	register,
 	logout,
 	getMe,
+	getActiveUsers,
 } from "../controllers/authController";
 
 /**
@@ -192,6 +193,16 @@ authRoutes.get(
 			},
 		});
 	},
+);
+
+/**
+ * ==================================================
+ * GET ACTIVE USERS
+ * ==================================================
+ */
+authRoutes.get(
+	"/auth/active-users",
+	getActiveUsers,
 );
 
 /**

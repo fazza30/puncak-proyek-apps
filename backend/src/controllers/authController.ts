@@ -779,3 +779,55 @@ export const getMe =
 				});
 		}
 	};
+
+export const getActiveUsers =
+	async (
+		req: Request,
+		res: Response,
+	) => {
+		try {
+			const activeUsers =
+				await User.countDocuments(
+					{
+						role: "customer",
+
+						isLoggedIn: true,
+
+						tokenExpiredAt: {
+							$gt: new Date(),
+						},
+					},
+				);
+
+			return res.json({
+				status:
+					"success",
+
+				message:
+					"Success get active users",
+
+				data: {
+					activeUsers,
+
+					maxUsers:
+						MAX_ACTIVE_USERS,
+				},
+			});
+		} catch (error) {
+			console.log(
+				error,
+			);
+
+			return res
+				.status(500)
+				.json({
+					status:
+						"failed",
+
+					message:
+						"Failed to get active users",
+
+					data: null,
+				});
+		}
+	};

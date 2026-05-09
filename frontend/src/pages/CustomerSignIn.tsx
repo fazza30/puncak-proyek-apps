@@ -5,7 +5,7 @@
  * ==================================================
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
 	useNavigate,
@@ -31,6 +31,7 @@ import {
 	login,
 	loginSchema,
 	type LoginValues,
+	getActiveUsers,
 } from "@/services/auth/auth.service";
 
 import {
@@ -48,6 +49,16 @@ export default function CustomerSignIn() {
 	 */
 	const navigate =
 		useNavigate();
+
+	const [
+		activeUsers,
+		setActiveUsers,
+	] = useState(0);
+
+	const [
+		maxUsers,
+		setMaxUsers,
+	] = useState(10);
 
 	/**
 	 * ==================================================
@@ -88,6 +99,29 @@ export default function CustomerSignIn() {
 			clearSession();
 		}
 	}, [navigate]);
+
+	/**
+	 * ==================================================
+	 * GET ACTIVE USERS
+	 * ==================================================
+	 */
+	useEffect(() => {
+		getActiveUsers()
+			.then((res) => {
+				setActiveUsers(
+					res.data.activeUsers,
+				);
+
+				setMaxUsers(
+					res.data.maxUsers,
+				);
+			})
+			.catch(() => {
+				console.log(
+					"Failed get active users",
+				);
+			});
+	}, []);
 
 	/**
 	 * ==================================================
@@ -219,6 +253,20 @@ export default function CustomerSignIn() {
 				<h1 className="font-bold text-[26px] leading-[39px]">
 					Sign In
 				</h1>
+				<p
+					className={`text-sm ${
+						activeUsers >=
+						maxUsers
+							? "text-red-400"
+							: "text-white/70"
+					}`}
+				>
+					User online:
+					{" "}
+					{activeUsers}
+					/
+					{maxUsers}
+				</p>
 
 				<div className="flex flex-col gap-4">
 					{/* EMAIL */}

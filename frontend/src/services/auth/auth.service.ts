@@ -32,3 +32,14 @@ export const login = async (
 
 export const signUp = async (data: FormData) =>
 	globalInstance.post("/auth/register", data).then((res) => res.data);
+
+export const getActiveUsers =
+	async () =>
+		globalInstance
+			.get(
+				"/auth/active-users",
+			)
+			.then(
+				(res) =>
+					res.data,
+			);
