@@ -158,7 +158,7 @@ export const transactionTicket =
 					.json({
 						status:
 							"failed",
-
+ 
 						message:
 							"Anda hanya bisa memesan 1 couple seat",
 
