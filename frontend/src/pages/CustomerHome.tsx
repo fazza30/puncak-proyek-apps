@@ -26,7 +26,13 @@ export default function CustomerHome() {
 	const { genres, movies } = useLoaderData() as LoaderData;
 
 	console.log("MOVIES LENGTH:", movies.length);
-	console.log(movies[0].thumbnailUrl);
+	console.log(
+		JSON.stringify(
+			movies[0],
+			null,
+			2,
+		),
+	);
 
 	return (
 		<div
