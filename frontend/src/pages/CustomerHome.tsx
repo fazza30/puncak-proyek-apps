@@ -13,7 +13,6 @@ import BottomBar from "@/components/BottomBar";
 import type { Movie } from "@/services/global/global.type";
 import type { Genre } from "@/services/genre/genre.type";
 import { Link, useLoaderData } from "react-router-dom";
-import { getImageUrl } from "@/lib/image";
 
 type LoaderData = {
 	movies: Movie[];

@@ -12,7 +12,6 @@ import { getMovieByGenre } from "@/services/global/global.service";
 import type { Genre } from "@/services/genre/genre.type";
 import type { Theater } from "@/services/theater/theater.type";
 import { useAppSelector } from "@/redux/hooks";
-import { getImageUrl } from "@/lib/image";
 
 export type LoaderData = {
 	genres: Pick<Genre, "_id" | "name">[];
@@ -107,7 +106,7 @@ export default function CustomerBrowseGenre() {
 								<Link to={`/movie/${item._id}`} className="card">
 									<div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
 										<img
-											src={getImageUrl(item.thumbnailUrl)}
+											src={item.thumbnailUrl}
 											className="w-full h-full object-cover"
 											alt="thumbnail"
 										/>
@@ -139,7 +138,7 @@ export default function CustomerBrowseGenre() {
 							<div className="flex items-center gap-[14px]">
 								<div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
 									<img
-										src={getImageUrl(item.thumbnailUrl)}
+										src={item.thumbnailUrl}
 										className="w-full h-full object-cover"
 										alt="thumbnail"
 									/>

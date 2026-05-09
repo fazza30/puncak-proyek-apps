@@ -32,7 +32,6 @@ import {
 } from "@/services/global/global.service";
 import { toast } from "sonner";
 import { get } from "react-hook-form";
-import { getImageUrl } from "@/lib/image";
 
 export default function CustomerTransaction() {
 	const navigate =
@@ -440,11 +439,7 @@ export default function CustomerTransaction() {
 					<div className="flex items-center gap-[14px]">
 						<div className="flex h-[110px] w-[100px] shrink-0 overflow-hidden rounded-2xl bg-[#D9D9D9]">
 							<img
-								src={
-									getImageUrl(
-										movie?.thumbnailUrl,
-									)
-								}
+								src={movie?.thumbnailUrl								}
 								className="h-full w-full object-cover"
 								alt="thumbnail"
 							/>

@@ -2,7 +2,6 @@ import { dateFormat } from "@/lib/utils";
 import type { Transaction } from "@/services/transaction/transaction.type";
 import { Link, useLoaderData } from "react-router-dom";
 import QRCode from "react-qr-code";
-import { getImageUrl } from "@/lib/image";
 
 export default function CustomerOrderDetail() {
 	const transaction = useLoaderData() as Transaction;
@@ -36,7 +35,7 @@ export default function CustomerOrderDetail() {
 					<div className="flex items-center gap-[14px]">
 						<div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
 							<img
-								src={getImageUrl(transaction.movie.thumbnailUrl)}
+								src={transaction.movie.thumbnailUrl}
 								className="w-full h-full object-cover"
 								alt="thumbnail"
 							/>

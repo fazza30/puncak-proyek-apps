@@ -1,5 +1,4 @@
 import BottomBar from "@/components/BottomBar";
-import { getImageUrl } from "@/lib/image";
 import { getSession, SESSION_KEY } from "@/lib/utils";
 import secureLocalStorage from "react-secure-storage";
 
@@ -24,7 +23,7 @@ export default function CustomerSettings() {
 				<div className="flex flex-col items-center gap-[14px] w-fit mx-auto">
 					<div className="flex w-[120px] h-[120px] shrink-0 rounded-full overflow-hidden">
 						<img
-							src={getImageUrl(auth?.photoUrl)}
+							src={auth?.photoUrl}
 							className="w-full h-full object-cover"
 							alt="photo2"
 						/>

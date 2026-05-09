@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 import "dayjs/locale/id";
 import clsx from "clsx";
 import { toast } from "react-hot-toast";
-import { getImageUrl } from "@/lib/image";
 
 export default function SelectTime() {
 	const { detail } = useLoaderData() as LoaderData;
@@ -89,7 +88,7 @@ export default function SelectTime() {
 					<div className="flex items-center gap-[14px]">
 						<div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
 							<img
-								src={getImageUrl(detail.thumbnailUrl)}
+								src={detail.thumbnailUrl}
 								className="w-full h-full object-cover"
 								alt="thumbnail"
 							/>

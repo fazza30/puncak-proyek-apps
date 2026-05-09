@@ -3,7 +3,6 @@ import { rupiahFormat } from "@/lib/utils";
 import type { Movie } from "@/services/movie/movie.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import ActionColumn from "./ActionColumn";
-import { getImageUrl } from "@/lib/image";
 
 export const columns: ColumnDef<Movie>[] = [
 	{
@@ -15,8 +14,8 @@ export const columns: ColumnDef<Movie>[] = [
 			return (
 				<div className="inline-flex items-center gap-4">
 					<img
-						src={getImageUrl(movie.thumbnailUrl)}
-						alt={getImageUrl(movie.thumbnailUrl)}
+						src={(movie.thumbnailUrl)}
+						alt={(movie.thumbnailUrl)}
 						className="w-[50px]"
 					/>
 

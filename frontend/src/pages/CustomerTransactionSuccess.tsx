@@ -21,7 +21,6 @@ import {
 import {
 	dateFormat,
 } from "@/lib/utils";
-import { getImageUrl } from "@/lib/image";
 
 export default function CustomerTransactionSuccess() {
 	const navigate =
@@ -134,11 +133,7 @@ export default function CustomerTransactionSuccess() {
 							<div className="flex items-center gap-4">
 								<div className="overflow-hidden rounded-2xl w-20 h-24 bg-white/10">
 									<img
-										src={
-											getImageUrl(
-												movie?.thumbnailUrl
-											)
-										}
+										src={movie?.thumbnailUrl}
 										className="object-cover w-full h-full"
 										alt="movie"
 									/>
