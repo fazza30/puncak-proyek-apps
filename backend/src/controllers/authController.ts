@@ -267,22 +267,10 @@ export const login =
 
 				io.emit("active-users", {
 					activeUsers,
-					maxUsers: MAX_ACTIVE_USERS,
+
+					maxUsers:
+						MAX_ACTIVE_USERS,
 				});
-
-				return res
-					.status(
-						400,
-					)
-					.json({
-						status:
-							"failed",
-
-						message:
-							"Email / Password incorrect",
-
-						data: null,
-					});
 			}
 
 			/**
