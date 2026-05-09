@@ -33,7 +33,9 @@ const movieSchema = new mongoose.Schema({
     virtuals: {
         thumbnailUrl: {
             get() {
-                return `${getAssetUrl()}${this.thumbnail}`;
+                return `${getAssetUrl(
+                    "thumbnails",
+                )}${this.thumbnail}`;
             }
         }
     },
