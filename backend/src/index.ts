@@ -33,6 +33,9 @@ app.use(
   })
 );
 
+console.log("CLIENT_URL:", process.env.CLIENT_URL);
+console.log("ALLOWED_ORIGINS:", allowedOrigins);
+
 connectDB();
 
 app.get("/", (req: Request, res: Response) => {
