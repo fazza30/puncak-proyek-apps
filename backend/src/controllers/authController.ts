@@ -144,6 +144,7 @@ export const login =
 				authSchema
 					.omit({
 						name: true,
+						role: true,
 					})
 					.parse(
 						req.body,
@@ -171,28 +172,6 @@ export const login =
 
 						message:
 							"Email not registered",
-
-						data: null,
-					});
-			}
-
-			/**
-			 * ROLE VALIDATION
-			 */
-			if (
-				parse.role !==
-				user.role
-			) {
-				return res
-					.status(
-						403,
-					)
-					.json({
-						status:
-							"failed",
-
-						message:
-							"Unauthorized access",
 
 						data: null,
 					});
