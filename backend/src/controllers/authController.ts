@@ -37,25 +37,40 @@ const BLOCK_MINUTES = 5;
 
 const LOGIN_SCHEDULE: Record<
 	string,
-	string
+	{
+		start: string;
+		end: string;
+	}
 > = {
-	"gmail.com":
-		"2026-05-09",
-		
-	"grade1.com":
-		"2026-05-14",
+	"gmail.com": {
+		start: "2026-05-09",
+		end: "2026-05-17",
+	},
 
-	"grade2.com":
-		"2026-05-15",
+	"grade1.com": {
+		start: "2026-05-09",
+		end: "2026-05-14",
+	},
 
-	"grade3.com":
-		"2026-05-16",
+	"grade2.com": {
+		start: "2026-05-15",
+		end: "2026-05-15",
+	},
 
-	"grade4.com":
-		"2026-05-17",
+	"grade3.com": {
+		start: "2026-05-16",
+		end: "2026-05-16",
+	},
 
-	"grade5.com":
-		"2026-05-17",
+	"grade4.com": {
+		start: "2026-05-17",
+		end: "2026-05-17",
+	},
+
+	"grade5.com": {
+		start: "2026-05-17",
+		end: "2026-05-17",
+	},
 };
 
 /**
@@ -292,17 +307,34 @@ export const login =
 				const today =
 					getTodayWIB();
 
-				const allowedDate =
+				const schedule =
 					LOGIN_SCHEDULE[
 						domain
 					];
+
+				const currentDate =
+					new Date(
+						today,
+					);
+
+				const startDate =
+					new Date(
+						schedule.start,
+					);
+
+				const endDate =
+					new Date(
+						schedule.end,
+					);
 
 				/**
 				 * LOGIN DATE INVALID
 				 */
 				if (
-					today !==
-					allowedDate
+					currentDate <
+						startDate ||
+					currentDate >
+						endDate
 				) {
 					return res
 						.status(
@@ -312,7 +344,7 @@ export const login =
 							status:
 								"failed",
 
-							message: `Akun ini hanya bisa login pada ${allowedDate}`,
+							message: `Akun ini hanya bisa login dari ${schedule.start} sampai ${schedule.end}`,
 
 							data: null,
 						});
