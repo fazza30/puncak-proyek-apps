@@ -1,7 +1,7 @@
 import type { BaseResponse } from "@/types/response";
 import { z } from "zod";
 import type { LoginResponse } from "./auth.type";
-import { globalInstance } from "@/lib/axios";
+import { globalInstance, privateInstance } from "@/lib/axios";
 
 export const authSchema = z.object({
 	name: z.string().min(5),
@@ -39,6 +39,15 @@ export const getActiveUsers =
 			.get(
 				"/auth/active-users",
 			)
+			.then(
+				(res) =>
+					res.data,
+			);
+
+export const logoutApi =
+	async () =>
+		privateInstance
+			.post("/auth/logout")
 			.then(
 				(res) =>
 					res.data,

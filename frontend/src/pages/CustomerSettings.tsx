@@ -1,14 +1,30 @@
 import BottomBar from "@/components/BottomBar";
 import { getSession, SESSION_KEY } from "@/lib/utils";
+import { logoutApi } from "@/services/auth/auth.service";
 import secureLocalStorage from "react-secure-storage";
 
 export default function CustomerSettings() {
 	const auth = getSession();
 
-	const logout = () => {
-		secureLocalStorage.removeItem(SESSION_KEY);
+	const logout =
+	async () => {
+		try {
+			await logoutApi();
+		} catch (
+			error
+		) {
+			console.log(
+				error,
+			);
+		}
 
-		window.location.replace("/sign-in");
+		secureLocalStorage.removeItem(
+			SESSION_KEY,
+		);
+
+		window.location.replace(
+			"/sign-in",
+		);
 	};
 
 	return (
