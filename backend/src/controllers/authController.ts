@@ -53,22 +53,22 @@ const LOGIN_SCHEDULE: Record<
 	},
 
 	"grade2.com": {
-		start: "2026-05-15",
+		start: "2026-05-09",
 		end: "2026-05-15",
 	},
 
 	"grade3.com": {
-		start: "2026-05-16",
+		start: "2026-05-09",
 		end: "2026-05-16",
 	},
 
 	"grade4.com": {
-		start: "2026-05-17",
+		start: "2026-05-09",
 		end: "2026-05-17",
 	},
 
 	"grade5.com": {
-		start: "2026-05-17",
+		start: "2026-05-09",
 		end: "2026-05-17",
 	},
 };

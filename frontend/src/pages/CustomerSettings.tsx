@@ -28,7 +28,7 @@ export default function CustomerSettings() {
 							alt="photo2"
 						/>
 					</div>
-					<div className="flex flex-col gap-[2px]">
+					<div className="flex flex-col gap-[2px] items-center text-center">
 						<p className="font-semibold text-xl leading-[30px] text-center">
 							{auth?.name}
 						</p>
