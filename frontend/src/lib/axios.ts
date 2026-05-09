@@ -23,7 +23,7 @@ import {
 const BASE_URL =
 	import.meta.env
 		.VITE_API_URL ??
-	"http://localhost:5000/api";
+	"http://localhost:5000";
 
 /**
  * ==================================================
@@ -34,7 +34,7 @@ const BASE_URL =
 
 export const globalInstance =
 	axios.create({
-		baseURL: BASE_URL,
+		baseURL: `${BASE_URL}/api`,
 
 		headers: {
 			"Content-Type":
@@ -51,7 +51,7 @@ export const globalInstance =
 
 export const privateInstance =
 	axios.create({
-		baseURL: BASE_URL,
+		baseURL: `${BASE_URL}/api`,
 
 		headers: {
 			"Content-Type":
