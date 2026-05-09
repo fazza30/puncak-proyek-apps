@@ -40,7 +40,7 @@ export default function CustomerHome() {
 				<div className="flex items-center gap-[14px] mr-3">
 					<div className="w-[60px] h-[60px] flex shrink-0 rounded-full overflow-hidden">
 						<img
-							src={getImageUrl(session?.photoUrl)}
+							src={session?.photoUrl}
 							className="w-full h-full object-cover"
 							alt="avatar"
 						/>
@@ -74,7 +74,7 @@ export default function CustomerHome() {
 							<Link to={`/movie/${item._id}`} className="card">
 								<div className="relative flex w-[200px] h-[200px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
 									<img
-										src={getImageUrl(item.thumbnailUrl)}
+										src={item.thumbnailUrl}
 										className="w-full h-full object-cover"
 										alt="thumbnail"
 									/>
@@ -142,7 +142,7 @@ export default function CustomerHome() {
 							<div className="flex items-center gap-[14px]">
 								<div className="w-[100px] h-[110px] flex shrink-0 rounded-2xl bg-[#D9D9D9] overflow-hidden">
 									<img
-										src={getImageUrl(item.thumbnailUrl)}
+										src={item.thumbnailUrl}
 										className="w-full h-full object-cover"
 										alt="thumbnail"
 									/>
@@ -199,7 +199,7 @@ export default function CustomerHome() {
 								<a href="details.html" className="card">
 									<div className="relative flex w-[240px] h-[300px] shrink-0 rounded-3xl bg-[#D9D9D9] overflow-hidden">
 										<img
-											src={getImageUrl(item.thumbnailUrl)}
+											src={item.thumbnailUrl}
 											className="w-full h-full object-cover"
 											alt="thumbnail"
 										/>
