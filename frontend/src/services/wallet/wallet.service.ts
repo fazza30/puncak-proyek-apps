@@ -4,8 +4,8 @@ import { privateInstance } from "@/lib/axios";
 
 export const getWalletTransactions = async (): Promise<
 	BaseResponse<WalletTransaction[]>
-> => privateInstance.get("/api/customer/topup-history").then((res) => res.data);
+> => privateInstance.get("/customer/topup-history").then((res) => res.data);
 
 export const topupWallet = async (data: { balance: number }): Promise<
 	BaseResponse<WalletTopup>
-> => privateInstance.post("/api/customer/topup", data).then((res) => res.data);
+> => privateInstance.post("/customer/topup", data).then((res) => res.data);

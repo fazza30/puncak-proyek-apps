@@ -13,16 +13,16 @@ export type TheaterValues = z.infer<typeof theaterSchema>;
 export const getTheaters = (
 	type: "admin" | "customer" = "admin",
 ): Promise<BaseResponse<Theater[]>> =>
-	privateInstance.get(`/api/${type}/theaters`).then((res) => res.data);
+	privateInstance.get(`/${type}/theaters`).then((res) => res.data);
 
 export const createTheater = (data: TheaterValues) =>
-	privateInstance.post("/api/admin/theaters", data).then((res) => res.data);
+	privateInstance.post("/admin/theaters", data).then((res) => res.data);
 
 export const getDetailTheater = (id: string): Promise<BaseResponse<Theater>> =>
-	privateInstance.get(`/api/admin/theaters/${id}`).then((res) => res.data);
+	privateInstance.get(`/admin/theaters/${id}`).then((res) => res.data);
 
 export const updateTheater = (data: TheaterValues, id: string) =>
-	privateInstance.put(`/api/admin/theaters/${id}`, data).then((res) => res.data);
+	privateInstance.put(`/admin/theaters/${id}`, data).then((res) => res.data);
 
 export const deleteTheater = (id: string) =>
-	privateInstance.delete(`/api/admin/theaters/${id}`).then((res) => res.data);
+	privateInstance.delete(`/admin/theaters/${id}`).then((res) => res.data);
