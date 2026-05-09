@@ -40,7 +40,7 @@ const LOGIN_SCHEDULE: Record<
 	string
 > = {
 	"gmail.com":
-		"2026-05-08",
+		"2026-05-09",
 		
 	"grade1.com":
 		"2026-05-14",
