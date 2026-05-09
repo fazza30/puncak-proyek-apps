@@ -16,7 +16,11 @@ export const signUpSchema = authSchema.omit({ role: true }).extend({
 		.refine((file: File) => file?.name, { message: "Photo is required" }),
 });
 
-export const loginSchema = authSchema.omit({ name: true });
+export const loginSchema =
+	authSchema.omit({
+		name: true,
+		role: true,
+	});
 
 export type LoginValues = z.infer<typeof loginSchema>;
 export type RegisterValues = z.infer<typeof signUpSchema>;

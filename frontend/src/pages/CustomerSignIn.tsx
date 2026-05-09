@@ -114,7 +114,6 @@ export default function CustomerSignIn() {
 							"",
 						password:
 							"",
-						role: "customer",
 					},
 			},
 		);
@@ -278,15 +277,6 @@ export default function CustomerSignIn() {
 						)}
 					</label>
 				</div>
-
-				{/* hidden role */}
-				<input
-					type="hidden"
-					value="customer"
-					{...register(
-						"role",
-					)}
-				/>
 
 				{/* BUTTON */}
 				<button

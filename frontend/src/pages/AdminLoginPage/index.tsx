@@ -132,8 +132,7 @@ export default function AdminLoginPage() {
 						email:
 							"",
 						password:
-							"",
-						role: "admin",
+							""
 					},
 			},
 		);
@@ -280,15 +279,6 @@ export default function AdminLoginPage() {
 
 										<FormMessage />
 									</FormItem>
-								)}
-							/>
-
-							{/* hidden role */}
-							<input
-								type="hidden"
-								value="admin"
-								{...form.register(
-									"role",
 								)}
 							/>
 
