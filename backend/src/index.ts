@@ -45,6 +45,33 @@ console.log("ALLOWED_ORIGINS:", allowedOrigins);
 
 connectDB();
 
+/**
+ * RESET EXPIRED SESSION
+ */
+const resetSessions =
+	async () => {
+		try {
+			await User.updateMany(
+			{
+				tokenExpiredAt: {
+					$lte: new Date(),
+				},
+			},
+			{
+				isLoggedIn: false,
+				activeToken: null,
+			},
+		);
+		} catch (error) {
+			console.log(
+				"Failed reset sessions:",
+				error,
+			);
+		}
+	};
+
+resetSessions();
+
 app.get("/", (req: Request, res: Response) => {
 	res.send("Express + TypeScript Server");
 });
