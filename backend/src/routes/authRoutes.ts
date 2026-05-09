@@ -110,6 +110,7 @@ authRoutes.post(
 	validateRequest(
 		authSchema.omit({
 			name: true,
+			role: true,
 		}),
 	),
 
