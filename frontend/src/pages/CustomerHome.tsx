@@ -97,6 +97,8 @@ export default function CustomerHome() {
 			>
 				<input
 					type="text"
+					name="search"
+					id="search"
 					className="appearance-none outline-none bg-transparent h-full w-full font-semibold placeholder:font-normal placeholder:text-white"
 					placeholder="Search movie by name"
 				/>
