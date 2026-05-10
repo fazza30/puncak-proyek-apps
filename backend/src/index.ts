@@ -169,7 +169,7 @@ io.on("connection", async (socket) => {
 				`${movieId}-${seat}`;
 
 			/**
-			 * already hold
+			 * already held
 			 */
 			if (
 				holdingSeats.has(
@@ -184,15 +184,32 @@ io.on("connection", async (socket) => {
 				return;
 			}
 
+			/**
+			 * HOLD 3 MINUTES
+			 */
 			holdingSeats.set(
 				key,
-				socket.id,
+				{
+					socketId:
+						socket.id,
+
+					expiredAt:
+						Date.now() +
+						3 *
+							60 *
+							1000,
+				},
 			);
 
 			io.emit(
 				"seat-held",
 				{
 					seat,
+					expiredAt:
+						Date.now() +
+						3 *
+							60 *
+							1000,
 				},
 			);
 		},
@@ -239,10 +256,10 @@ io.on("connection", async (socket) => {
 		() => {
 			for (const [
 				key,
-				socketId,
+				value,
 			] of holdingSeats.entries()) {
 				if (
-					socketId ===
+					value.socketId ===
 					socket.id
 				) {
 					holdingSeats.delete(
@@ -268,9 +285,57 @@ io.on("connection", async (socket) => {
 
 /**
  * ==================================================
- * TEMP HOLD SEATS
+ * AUTO RELEASE EXPIRED SEATS
+ * ==================================================
+ */
+
+setInterval(() => {
+	const now =
+		Date.now();
+
+	for (const [
+		key,
+		value,
+	] of holdingSeats.entries()) {
+		if (
+			now >=
+			value.expiredAt
+		) {
+			holdingSeats.delete(
+				key,
+			);
+
+			const seat =
+				key.split(
+					"-",
+				)[1];
+
+			io.emit(
+				"seat-released",
+				{
+					seat,
+				},
+			);
+
+			console.log(
+				"Seat expired:",
+				seat,
+			);
+		}
+	}
+}, 5000);
+
+/**
+ * ==================================================
+ * HOLDING SEATS
  * ==================================================
  */
 
 const holdingSeats =
-	new Map();
+	new Map<
+		string,
+		{
+			socketId: string;
+			expiredAt: number;
+		}
+	>();

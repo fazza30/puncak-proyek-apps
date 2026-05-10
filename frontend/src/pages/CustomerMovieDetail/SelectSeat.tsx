@@ -60,6 +60,18 @@ export default function SelectSeat() {
 	>(null);
 
 	const [
+		expiredAt,
+		setExpiredAt,
+	] = useState<
+		number | null
+	>(null);
+
+	const [
+		timeLeft,
+		setTimeLeft,
+	] = useState(0);
+
+	const [
 		holdingSeats,
 		setHoldingSeats,
 	] = useState<string[]>(
@@ -235,6 +247,18 @@ export default function SelectSeat() {
 						data.seat,
 					],
 				);
+
+				/**
+				 * own selected seat
+				 */
+				if (
+					selectedSeat ===
+					data.seat
+				) {
+					setExpiredAt(
+						data.expiredAt,
+					);
+				}
 			},
 		);
 
@@ -265,6 +289,62 @@ export default function SelectSeat() {
 			);
 		};
 	}, []);
+
+	/**
+	 * ==================================================
+	 * COUNTDOWN TIMER
+	 * ==================================================
+	 */
+
+	useEffect(() => {
+		if (!expiredAt)
+			return;
+
+		const interval =
+			setInterval(() => {
+				const remaining =
+					Math.max(
+						0,
+						Math.floor(
+							(expiredAt -
+								Date.now()) /
+								1000,
+						),
+					);
+
+				setTimeLeft(
+					remaining,
+				);
+
+				/**
+				 * expired
+				 */
+				if (
+					remaining <= 0
+				) {
+					clearInterval(
+						interval,
+					);
+
+					setSelectedSeat(
+						null,
+					);
+
+					setExpiredAt(
+						null,
+					);
+
+					toast.error(
+						"Waktu pemesanan habis",
+					);
+				}
+			}, 1000);
+
+		return () =>
+			clearInterval(
+				interval,
+			);
+	}, [expiredAt]);
 
 	const handleSelectSeat = (
 		seat: string,
@@ -393,6 +473,24 @@ export default function SelectSeat() {
 			);
 		};
 
+	const formatTime = (
+		seconds: number,
+	) => {
+		const minutes =
+			Math.floor(
+				seconds / 60,
+			);
+
+		const secs =
+			seconds % 60;
+
+		return `${minutes
+			.toString()
+			.padStart(2, "0")}:${secs
+			.toString()
+			.padStart(2, "0")}`;
+	};
+	
 	return (
 		<div className="relative mx-auto flex min-h-screen w-full flex-col overflow-hidden bg-[#0A0A12] text-white">
 			{/* ================================================== */}
@@ -957,6 +1055,26 @@ export default function SelectSeat() {
 							1 Couple
 							Seat
 						</p>
+
+						{selectedSeat &&
+							timeLeft > 0 && (
+								<p
+									className={cn(
+										"text-sm font-semibold",
+										timeLeft <= 30
+											? "text-red-400"
+											: "text-yellow-300",
+									)}
+								>
+									Dikunci:
+									{" "}
+									{
+										formatTime(
+											timeLeft,
+										)
+									}
+								</p>
+							)}
 					</div>
 
 					<button
