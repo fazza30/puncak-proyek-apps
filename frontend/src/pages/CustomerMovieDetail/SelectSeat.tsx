@@ -247,18 +247,6 @@ export default function SelectSeat() {
 						data.seat,
 					],
 				);
-
-				/**
-				 * own selected seat
-				 */
-				if (
-					selectedSeat ===
-					data.seat
-				) {
-					setExpiredAt(
-						data.expiredAt,
-					);
-				}
 			},
 		);
 
@@ -419,6 +407,12 @@ export default function SelectSeat() {
 		/**
 		 * HOLD NEW
 		 */
+		const expiresAt =
+			Date.now() +
+			3 *
+			60 *
+			1000;
+
 		socket.emit(
 			"hold-seat",
 			{
@@ -426,7 +420,18 @@ export default function SelectSeat() {
 					detail._id,
 
 				seat,
+
+				expiredAt:
+					expiresAt,
 			},
+		);
+
+		setExpiredAt(
+			expiresAt,
+		);
+
+		setSelectedSeat(
+			seat,
 		);
 
 		setSelectedSeat(
