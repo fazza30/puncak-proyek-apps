@@ -862,7 +862,7 @@ export default function SelectSeat() {
 																			bg-zinc-800/50
 																		`,
 																)}
-															>
+															> 
 																<div
 																	className={cn(
 																		`
