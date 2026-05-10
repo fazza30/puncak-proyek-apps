@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import "../../customer.css";
 
@@ -28,6 +28,8 @@ import {
 
 import { toast } from "react-hot-toast";
 
+import { socket } from "@/lib/socket";
+
 export default function SelectSeat() {
 	const { detail } =
 		useLoaderData() as LoaderData;
@@ -56,6 +58,13 @@ export default function SelectSeat() {
 	] = useState<
 		string | null
 	>(null);
+
+	const [
+		holdingSeats,
+		setHoldingSeats,
+	] = useState<string[]>(
+		[],
+	);
 
 	/**
 	 * ==================================================
@@ -205,9 +214,57 @@ export default function SelectSeat() {
 
 	/**
 	 * ==================================================
-	 * HANDLE SELECT
+	 * REALTIME SEAT
 	 * ==================================================
 	 */
+
+	useEffect(() => {
+		if (!socket.connected) {
+			socket.connect();
+		}
+
+		/**
+		 * SEAT HELD
+		 */
+		socket.on(
+			"seat-held",
+			(data) => {
+				setHoldingSeats(
+					(prev) => [
+						...prev,
+						data.seat,
+					],
+				);
+			},
+		);
+
+		/**
+		 * SEAT RELEASED
+		 */
+		socket.on(
+			"seat-released",
+			(data) => {
+				setHoldingSeats(
+					(prev) =>
+						prev.filter(
+							(seat) =>
+								seat !==
+								data.seat,
+						),
+				);
+			},
+		);
+
+		return () => {
+			socket.off(
+				"seat-held",
+			);
+
+			socket.off(
+				"seat-released",
+			);
+		};
+	}, []);
 
 	const handleSelectSeat = (
 		seat: string,
@@ -222,16 +279,75 @@ export default function SelectSeat() {
 			return;
 		}
 
+		/**
+		 * HOLDING CHECK
+		 */
+		if (
+			holdingSeats.includes(
+				seat,
+			)
+		) {
+			toast.error(
+				"Kursi sedang dipilih user lain",
+			);
+
+			return;
+		}
+
+		/**
+		 * UNSELECT
+		 */
 		if (
 			selectedSeat ===
 			seat
 		) {
+			socket.emit(
+				"release-seat",
+				{
+					movieId:
+						detail._id,
+
+					seat,
+				},
+			);
+
 			setSelectedSeat(
 				null,
 			);
 
 			return;
 		}
+
+		/**
+		 * RELEASE OLD
+		 */
+		if (
+			selectedSeat
+		) {
+			socket.emit(
+				"release-seat",
+				{
+					movieId:
+						detail._id,
+
+					seat:
+						selectedSeat,
+				},
+			);
+		}
+
+		/**
+		 * HOLD NEW
+		 */
+		socket.emit(
+			"hold-seat",
+			{
+				movieId:
+					detail._id,
+
+				seat,
+			},
+		);
 
 		setSelectedSeat(
 			seat,
@@ -468,6 +584,11 @@ export default function SelectSeat() {
 														item.seat,
 													);
 
+												const holding =
+													holdingSeats.includes(
+														item.seat,
+													);
+
 												const splitSeat =
 													item.seat.split("-");
 
@@ -498,7 +619,10 @@ export default function SelectSeat() {
 
 														<button
 															type="button"
-															disabled={booked}
+															disabled={
+																booked ||
+																holding
+															}
 															onClick={() =>
 																handleSelectSeat(
 																	item.seat,
@@ -531,7 +655,7 @@ export default function SelectSeat() {
 																		hover:scale-105
 																		hover:bg-[#C4B5FD]
 																	`,
-																booked &&
+																(booked || holding) &&
 																	`
 																		cursor-not-allowed
 																		border-zinc-700
@@ -585,7 +709,7 @@ export default function SelectSeat() {
 																	items-center
 																	justify-between
 																`,
-																booked &&
+																(booked || holding) &&
 																	"opacity-40",
 															)}
 														>
@@ -613,7 +737,10 @@ export default function SelectSeat() {
 
 															<button
 																type="button"
-																disabled={booked}
+																disabled={
+																	booked || 
+																	holding
+																}
 																onClick={() =>
 																	handleSelectSeat(
 																		item.seat,
@@ -647,7 +774,7 @@ export default function SelectSeat() {
 																			hover:scale-105
 																			hover:bg-[#C4B5FD]
 																		`,
-																	booked &&
+																	(booked || holding) &&
 																		`
 																			cursor-not-allowed
 																			border-zinc-700
@@ -691,7 +818,10 @@ export default function SelectSeat() {
 
 															<button
 																type="button"
-																disabled={booked}
+																disabled={
+																	booked ||
+																	holding
+																}
 																onClick={() =>
 																	handleSelectSeat(
 																		item.seat,
@@ -725,7 +855,7 @@ export default function SelectSeat() {
 																			hover:scale-105
 																			hover:bg-[#C4B5FD]
 																		`,
-																	booked &&
+																	(booked || holding) &&
 																		`
 																			cursor-not-allowed
 																			border-zinc-700

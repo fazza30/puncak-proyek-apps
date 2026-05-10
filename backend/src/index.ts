@@ -150,4 +150,127 @@ io.on("connection", async (socket) => {
 			socket.id,
 		);
 	});
+
+	/**
+	 * ==================================================
+	 * HOLD SEAT
+	 * ==================================================
+	 */
+
+	socket.on(
+		"hold-seat",
+		(data) => {
+			const {
+				movieId,
+				seat,
+			} = data;
+
+			const key =
+				`${movieId}-${seat}`;
+
+			/**
+			 * already hold
+			 */
+			if (
+				holdingSeats.has(
+					key,
+				)
+			) {
+				socket.emit(
+					"seat-unavailable",
+					seat,
+				);
+
+				return;
+			}
+
+			holdingSeats.set(
+				key,
+				socket.id,
+			);
+
+			io.emit(
+				"seat-held",
+				{
+					seat,
+				},
+			);
+		},
+	);
+
+	/**
+	 * ==================================================
+	 * RELEASE SEAT
+	 * ==================================================
+	 */
+
+	socket.on(
+		"release-seat",
+		(data) => {
+			const {
+				movieId,
+				seat,
+			} = data;
+
+			const key =
+				`${movieId}-${seat}`;
+
+			holdingSeats.delete(
+				key,
+			);
+
+			io.emit(
+				"seat-released",
+				{
+					seat,
+				},
+			);
+		},
+	);
+
+	/**
+	 * ==================================================
+	 * AUTO RELEASE ON DISCONNECT
+	 * ==================================================
+	 */
+
+	socket.on(
+		"disconnect",
+		() => {
+			for (const [
+				key,
+				socketId,
+			] of holdingSeats.entries()) {
+				if (
+					socketId ===
+					socket.id
+				) {
+					holdingSeats.delete(
+						key,
+					);
+
+					const seat =
+						key.split(
+							"-",
+						)[1];
+
+					io.emit(
+						"seat-released",
+						{
+							seat,
+						},
+					);
+				}
+			}
+		},
+	);
 });
+
+/**
+ * ==================================================
+ * TEMP HOLD SEATS
+ * ==================================================
+ */
+
+const holdingSeats =
+	new Map();
