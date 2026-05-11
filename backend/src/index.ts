@@ -145,10 +145,25 @@ io.on("connection", async (socket) => {
 				);
 			}
 
+			for (const [socketKey, storedUserId] of userSockets.entries()) {
+				if (storedUserId === userId) {
+					userSockets.delete(socketKey);
+				}
+			}
+
 			userSockets.set(
 				socket.id,
 				userId,
 			);
+
+			for (const [key, value] of holdingSeats.entries()) {
+				if (value.userId === userId) {
+					holdingSeats.set(key, {
+						...value,
+						socketId: socket.id,
+					});
+				}
+			}
 
 			console.log(
 				"Socket registered:",
@@ -247,6 +262,10 @@ io.on("connection", async (socket) => {
 
 					disconnectTimers.delete(
 						userId,
+					);
+
+					userSockets.delete(
+						socket.id,
 					);
 				}, 10000);
 
