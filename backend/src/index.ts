@@ -16,9 +16,14 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  process.env.CLIENT_URL,
+const allowedOrigins: string[] = [
+	"http://localhost:5173",
+
+	process.env.CLIENT_URL ?? "",
+
+	"https://puncakproyekalazka41.com",
+
+	"https://www.puncakproyekalazka41.com",
 ].filter(Boolean);
 
 app.use(bodyParser.json());
@@ -26,16 +31,24 @@ app.use(express.static("public"));
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (
-        !origin ||
-        origin.includes("vercel.app") ||
-        origin === "http://localhost:5173"
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+		if (
+			!origin ||
+			allowedOrigins.includes(origin)
+		) {
+			callback(null, true);
+		} else {
+			console.log(
+				"Blocked by CORS:",
+				origin,
+			);
+
+			callback(
+				new Error(
+					"Not allowed by CORS",
+				),
+			);
+		}
+	},
     credentials: true,
   })
 );
@@ -107,10 +120,7 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
 	cors: {
-		origin: [
-			"http://localhost:5173",
-			process.env.CLIENT_URL ?? "",
-		],
+		origin: allowedOrigins,
 		credentials: true,
 	},
 });
