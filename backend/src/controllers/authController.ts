@@ -247,6 +247,18 @@ export const login =
 				}
 
 				await user.save();
+				
+				return res
+				.status(400)
+				.json({
+					status:
+						"failed",
+
+					message:
+						"Wrong password",
+
+					data: null,
+				});
 			}
 
 			/**
@@ -471,6 +483,8 @@ export const login =
 					"Success login",
 
 				data: {
+					id: user._id.toString(),
+
 					name: user.name,
 
 					email:

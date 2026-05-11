@@ -30,6 +30,8 @@ import { toast } from "react-hot-toast";
 
 import { socket } from "@/lib/socket";
 
+import { getSession } from "@/lib/utils";
+
 export default function SelectSeat() {
 	const { detail } =
 		useLoaderData() as LoaderData;
@@ -39,6 +41,11 @@ export default function SelectSeat() {
 
 	const navigate =
 		useNavigate();
+
+	const [isLocking, setIsLocking] =
+		useState(false);
+
+	const auth = getSession();
 
 	const detailTicket =
 		useAppSelector(
@@ -235,6 +242,11 @@ export default function SelectSeat() {
 			socket.connect();
 		}
 
+		socket.emit(
+			"register-user",
+			auth?.id,
+		);
+
 		/**
 		 * SYNC HOLDING SEATS
 		 */
@@ -242,10 +254,16 @@ export default function SelectSeat() {
 			"sync-holding-seats",
 			(data) => {
 				setHoldingSeats(
-					data.map(
-						(item: any) =>
-							item.seat,
-					),
+					data
+						.filter(
+							(item: any) =>
+								item.movieId ===
+								detail._id,
+						)
+						.map(
+							(item: any) =>
+								item.seat,
+						),
 				);
 			},
 		);
@@ -256,6 +274,12 @@ export default function SelectSeat() {
 		socket.on(
 			"seat-held",
 			(data) => {
+				if (
+					data.movieId !==
+					detail._id
+				)
+					return;
+
 				setHoldingSeats(
 					(prev) => {
 						if (
@@ -281,6 +305,12 @@ export default function SelectSeat() {
 		socket.on(
 			"seat-released",
 			(data) => {
+				if (
+					data.movieId !==
+					detail._id
+				)
+					return;
+
 				setHoldingSeats(
 					(prev) =>
 						prev.filter(
@@ -305,7 +335,7 @@ export default function SelectSeat() {
 				"seat-released",
 			);
 		};
-	}, []);
+	}, [auth?.id, detail._id]);
 
 	/**
 	 * ==================================================
@@ -397,6 +427,10 @@ export default function SelectSeat() {
 			return;
 		}
 
+		if (isLocking) return;
+
+		setIsLocking(true);
+		
 		/**
 		 * HOLDING CHECK
 		 */
@@ -409,6 +443,8 @@ export default function SelectSeat() {
 			toast.error(
 				"Kursi sedang dipilih user lain",
 			);
+
+			setIsLocking(false);
 
 			return;
 		}
@@ -442,6 +478,8 @@ export default function SelectSeat() {
 				0,
 			);
 
+			setIsLocking(false);
+
 			return;
 		}
 
@@ -472,9 +510,22 @@ export default function SelectSeat() {
 			60 *
 			1000;
 
+		if (!auth?.id) {
+			toast.error(
+				"Session tidak valid",
+			);
+
+			setIsLocking(false);
+
+			return;
+		}
+
 		socket.emit(
 			"hold-seat",
 			{
+				userId:
+					auth?.id,
+
 				movieId:
 					detail._id,
 
@@ -492,6 +543,10 @@ export default function SelectSeat() {
 		setSelectedSeat(
 			seat,
 		);
+
+		setTimeout(() => {
+			setIsLocking(false);
+		}, 300);
 	};
 
 	/**
@@ -552,14 +607,14 @@ export default function SelectSeat() {
 	};
 
 	/**
+	 * ==================================================
 	 * AUTO RELEASE ON UNMOUNT
+	 * ==================================================
 	 */
 
 	useEffect(() => {
 		return () => {
-			if (
-				selectedSeat
-			) {
+			if (selectedSeat) {
 				socket.emit(
 					"release-seat",
 					{
@@ -807,7 +862,8 @@ export default function SelectSeat() {
 															type="button"
 															disabled={
 																booked ||
-																holding
+																holding ||
+																isLocking
 															}
 															onClick={() =>
 																handleSelectSeat(
@@ -925,7 +981,8 @@ export default function SelectSeat() {
 																type="button"
 																disabled={
 																	booked || 
-																	holding
+																	holding ||
+																	isLocking
 																}
 																onClick={() =>
 																	handleSelectSeat(
@@ -1006,7 +1063,8 @@ export default function SelectSeat() {
 																type="button"
 																disabled={
 																	booked ||
-																	holding
+																	holding ||
+																	isLocking
 																}
 																onClick={() =>
 																	handleSelectSeat(

@@ -124,6 +124,39 @@ export const io = new Server(server, {
 io.on("connection", async (socket) => {
 	console.log("User connected:", socket.id);
 
+	socket.on(
+		"register-user",
+		(userId) => {
+			if (!userId)
+				return;
+
+			const existingTimer =
+				disconnectTimers.get(
+					userId,
+				);
+
+			if (existingTimer) {
+				clearTimeout(
+					existingTimer,
+				);
+
+				disconnectTimers.delete(
+					userId,
+				);
+			}
+
+			userSockets.set(
+				socket.id,
+				userId,
+			);
+
+			console.log(
+				"Socket registered:",
+				userId,
+			);
+		},
+	);
+
 	/**
 	 * SYNC HOLDING SEATS
 	 */
@@ -172,35 +205,55 @@ io.on("connection", async (socket) => {
 				socket.id,
 			);
 
-			for (const [
-				key,
-				value,
-			] of holdingSeats.entries()) {
-				if (
-					value.socketId ===
-					socket.id
-				) {
-					holdingSeats.delete(
+			const userId =
+				userSockets.get(
+					socket.id,
+				);
+
+			if (!userId)
+				return;
+
+			const timer =
+				setTimeout(() => {
+					for (const [
 						key,
-					);
+						value,
+					] of holdingSeats.entries()) {
+						if (
+							value.userId ===
+							userId
+						) {
+							holdingSeats.delete(
+								key,
+							);
 
-					io.emit(
-						"seat-released",
-						{
-							movieId:
-								value.movieId,
-								
-							seat:
+							io.emit(
+								"seat-released",
+								{
+									movieId:
+										value.movieId,
+
+									seat:
+										value.seat,
+								},
+							);
+
+							console.log(
+								"Seat released after disconnect timeout:",
 								value.seat,
-						},
-					);
+							);
+						}
+					}
 
-					console.log(
-						"Seat released on disconnect:",
-						value.seat,
+					disconnectTimers.delete(
+						userId,
 					);
-				}
-			}
+				}, 10000);
+
+			disconnectTimers.set(
+				userId,
+				timer,
+			);
 		},
 	);
 
@@ -214,6 +267,7 @@ io.on("connection", async (socket) => {
 		"hold-seat",
 		(data) => {
 			const {
+				userId,
 				movieId,
 				seat,
 			} = data;
@@ -224,10 +278,15 @@ io.on("connection", async (socket) => {
 			/**
 			 * already held
 			 */
-			if (
-				holdingSeats.has(
+			const existingSeat =
+				holdingSeats.get(
 					key,
-				)
+				);
+
+			if (
+				existingSeat &&
+				existingSeat.userId !==
+					userId
 			) {
 				socket.emit(
 					"seat-unavailable",
@@ -249,6 +308,8 @@ io.on("connection", async (socket) => {
 			holdingSeats.set(
 				key,
 				{
+					userId,
+
 					socketId:
 						socket.id,
 
@@ -354,9 +415,22 @@ const holdingSeats =
 	new Map<
 		string,
 		{
+			userId: string;
 			socketId: string;
 			movieId: string;
 			seat: string;
 			expiredAt: number;
 		}
+	>();
+
+const disconnectTimers =
+	new Map<
+		string,
+		NodeJS.Timeout
+	>();
+
+const userSockets =
+	new Map<
+		string,
+		string
 	>();
