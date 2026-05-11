@@ -17,7 +17,7 @@ import { Link, useLoaderData } from "react-router-dom";
 type LoaderData = {
 	movies: Movie[];
 	genres: Pick<Genre, "_id" | "name">[];
-};
+}; 
 
 export default function CustomerHome() {
 	const session = getSession();
