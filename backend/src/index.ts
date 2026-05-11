@@ -125,6 +125,26 @@ io.on("connection", async (socket) => {
 	console.log("User connected:", socket.id);
 
 	/**
+	 * SYNC HOLDING SEATS
+	 */
+	const seats =
+		Array.from(
+			holdingSeats.values(),
+		).map(
+			(value) => ({
+				movieId: value.movieId,
+				seat: value.seat,
+				expiredAt:
+					value.expiredAt,
+			}),
+		);
+
+	socket.emit(
+		"sync-holding-seats",
+		seats,
+	);
+
+	/**
 	 * SEND ACTIVE USERS
 	 */
 	const activeUsers =
@@ -144,12 +164,45 @@ io.on("connection", async (socket) => {
 	/**
 	 * DISCONNECT
 	 */
-	socket.on("disconnect", () => {
-		console.log(
-			"User disconnected:",
-			socket.id,
-		);
-	});
+	socket.on(
+		"disconnect",
+		() => {
+			console.log(
+				"User disconnected:",
+				socket.id,
+			);
+
+			for (const [
+				key,
+				value,
+			] of holdingSeats.entries()) {
+				if (
+					value.socketId ===
+					socket.id
+				) {
+					holdingSeats.delete(
+						key,
+					);
+
+					io.emit(
+						"seat-released",
+						{
+							movieId:
+								value.movieId,
+								
+							seat:
+								value.seat,
+						},
+					);
+
+					console.log(
+						"Seat released on disconnect:",
+						value.seat,
+					);
+				}
+			}
+		},
+	);
 
 	/**
 	 * ==================================================
@@ -187,29 +240,32 @@ io.on("connection", async (socket) => {
 			/**
 			 * HOLD 3 MINUTES
 			 */
+			const expiredAt =
+				Date.now() +
+				3 *
+				60 *
+				1000;
+
 			holdingSeats.set(
 				key,
 				{
 					socketId:
 						socket.id,
 
-					expiredAt:
-						Date.now() +
-						3 *
-							60 *
-							1000,
+					movieId,
+
+					seat,
+
+					expiredAt,
 				},
 			);
 
 			io.emit(
 				"seat-held",
 				{
+					movieId,
 					seat,
-					expiredAt:
-						Date.now() +
-						3 *
-							60 *
-							1000,
+					expiredAt,
 				},
 			);
 		},
@@ -239,46 +295,10 @@ io.on("connection", async (socket) => {
 			io.emit(
 				"seat-released",
 				{
+					movieId,
 					seat,
 				},
 			);
-		},
-	);
-
-	/**
-	 * ==================================================
-	 * AUTO RELEASE ON DISCONNECT
-	 * ==================================================
-	 */
-
-	socket.on(
-		"disconnect",
-		() => {
-			for (const [
-				key,
-				value,
-			] of holdingSeats.entries()) {
-				if (
-					value.socketId ===
-					socket.id
-				) {
-					holdingSeats.delete(
-						key,
-					);
-
-					const seat =
-						key.split(
-							"-",
-						)[1];
-
-					io.emit(
-						"seat-released",
-						{
-							seat,
-						},
-					);
-				}
-			}
 		},
 	);
 });
@@ -306,13 +326,12 @@ setInterval(() => {
 			);
 
 			const seat =
-				key.split(
-					"-",
-				)[1];
+				value.seat;
 
 			io.emit(
 				"seat-released",
 				{
+					movieId: key.split("-")[0],
 					seat,
 				},
 			);
@@ -336,6 +355,8 @@ const holdingSeats =
 		string,
 		{
 			socketId: string;
+			movieId: string;
+			seat: string;
 			expiredAt: number;
 		}
 	>();

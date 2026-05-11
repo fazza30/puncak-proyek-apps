@@ -236,16 +236,41 @@ export default function SelectSeat() {
 		}
 
 		/**
+		 * SYNC HOLDING SEATS
+		 */
+		socket.on(
+			"sync-holding-seats",
+			(data) => {
+				setHoldingSeats(
+					data.map(
+						(item: any) =>
+							item.seat,
+					),
+				);
+			},
+		);
+
+		/**
 		 * SEAT HELD
 		 */
 		socket.on(
 			"seat-held",
 			(data) => {
 				setHoldingSeats(
-					(prev) => [
-						...prev,
-						data.seat,
-					],
+					(prev) => {
+						if (
+							prev.includes(
+								data.seat,
+							)
+						) {
+							return prev;
+						}
+
+						return [
+							...prev,
+							data.seat,
+						];
+					},
 				);
 			},
 		);
@@ -268,6 +293,10 @@ export default function SelectSeat() {
 		);
 
 		return () => {
+			socket.off(
+				"sync-holding-seats",
+			);
+
 			socket.off(
 				"seat-held",
 			);
@@ -305,7 +334,7 @@ export default function SelectSeat() {
 				);
 
 				/**
-				 * expired
+				 * EXPIRED
 				 */
 				if (
 					remaining <= 0
@@ -314,6 +343,21 @@ export default function SelectSeat() {
 						interval,
 					);
 
+					if (
+						selectedSeat
+					) {
+						socket.emit(
+							"release-seat",
+							{
+								movieId:
+									detail._id,
+
+								seat:
+									selectedSeat,
+							},
+						);
+					}
+
 					setSelectedSeat(
 						null,
 					);
@@ -321,6 +365,8 @@ export default function SelectSeat() {
 					setExpiredAt(
 						null,
 					);
+
+					setTimeLeft(0);
 
 					toast.error(
 						"Waktu pemesanan habis",
@@ -332,7 +378,11 @@ export default function SelectSeat() {
 			clearInterval(
 				interval,
 			);
-	}, [expiredAt]);
+	}, [
+		expiredAt,
+		selectedSeat,
+		detail._id,
+	]);
 
 	const handleSelectSeat = (
 		seat: string,
@@ -353,7 +403,8 @@ export default function SelectSeat() {
 		if (
 			holdingSeats.includes(
 				seat,
-			)
+			) &&
+			selectedSeat !== seat
 		) {
 			toast.error(
 				"Kursi sedang dipilih user lain",
@@ -381,6 +432,14 @@ export default function SelectSeat() {
 
 			setSelectedSeat(
 				null,
+			);
+
+			setExpiredAt(
+				null,
+			);
+
+			setTimeLeft(
+				0,
 			);
 
 			return;
@@ -428,10 +487,6 @@ export default function SelectSeat() {
 
 		setExpiredAt(
 			expiresAt,
-		);
-
-		setSelectedSeat(
-			seat,
 		);
 
 		setSelectedSeat(
@@ -495,6 +550,32 @@ export default function SelectSeat() {
 			.toString()
 			.padStart(2, "0")}`;
 	};
+
+	/**
+	 * AUTO RELEASE ON UNMOUNT
+	 */
+
+	useEffect(() => {
+		return () => {
+			if (
+				selectedSeat
+			) {
+				socket.emit(
+					"release-seat",
+					{
+						movieId:
+							detail._id,
+
+						seat:
+							selectedSeat,
+					},
+				);
+			}
+		};
+	}, [
+		selectedSeat,
+		detail._id,
+	]);
 	
 	return (
 		<div className="relative mx-auto flex min-h-screen w-full flex-col overflow-hidden bg-[#0A0A12] text-white">
@@ -690,7 +771,9 @@ export default function SelectSeat() {
 												const holding =
 													holdingSeats.includes(
 														item.seat,
-													);
+													) &&
+													selectedSeat !==
+														item.seat;
 
 												const splitSeat =
 													item.seat.split("-");
