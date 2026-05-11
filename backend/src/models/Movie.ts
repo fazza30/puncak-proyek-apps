@@ -18,7 +18,7 @@ const movieSchema = new mongoose.Schema({
             ref: "Theater"
         },
     ],
-    description: {
+    description: { 
         type: String,
         required: true
     },
