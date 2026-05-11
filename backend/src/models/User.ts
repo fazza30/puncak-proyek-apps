@@ -169,9 +169,7 @@ userSchema
 		"photoUrl",
 	)
 	.get(function () {
-		return `${getAssetUrl(
-			"photos",
-		)}${this.photo}`;
+		return this.photo;
 	});
 
 /**
