@@ -266,7 +266,7 @@ io.on("connection", async (socket) => {
 
 					userSockets.delete(
 						socket.id,
-					);
+					); 
 				}, 10000);
 
 			disconnectTimers.set(
