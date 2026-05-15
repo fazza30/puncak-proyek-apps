@@ -22,7 +22,7 @@ import { io } from "../index";
 const MAX_ACTIVE_USERS = 10;
 
 // token expired
-const TOKEN_EXPIRED_MINUTES = 30;
+const TOKEN_EXPIRED_MINUTES = 10;
 
 // maksimal percobaan login
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -45,32 +45,32 @@ const LOGIN_SCHEDULE: Record<
 > = {
 	"gmail.com": {
 		start: "2026-05-09",
-		end: "2026-05-17",
+		end: "2026-05-22",
 	},
 
 	"grade1.com": {
-		start: "2026-05-09",
-		end: "2026-05-14",
+		start: "2026-05-19",
+		end: "2026-05-19",
 	},
 
 	"grade2.com": {
-		start: "2026-05-09",
-		end: "2026-05-15",
+		start: "2026-05-20",
+		end: "2026-05-20",
 	},
 
 	"grade3.com": {
-		start: "2026-05-09",
-		end: "2026-05-16",
+		start: "2026-05-21",
+		end: "2026-05-21",
 	},
 
 	"grade4.com": {
-		start: "2026-05-09",
-		end: "2026-05-17",
+		start: "2026-05-22",
+		end: "2026-05-22",
 	},
 
 	"grade5.com": {
-		start: "2026-05-09",
-		end: "2026-05-17",
+		start: "2026-05-22",
+		end: "2026-05-22",
 	},
 };
 
@@ -136,7 +136,7 @@ const buildToken = (
 		secretKey,
 		{
 			expiresIn:
-				"30m",
+				"10m",
 		},
 	);
 };
