@@ -393,7 +393,7 @@ const adminRoutes: RouteObject[] =
 				},
 
 				/**
-				 * CUSTOMERS
+				 * CUSTOMERS 
 				 */
 				{
 					path: "/admin/customers/create",
