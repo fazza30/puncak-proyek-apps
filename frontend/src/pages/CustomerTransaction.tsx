@@ -671,18 +671,18 @@ export default function CustomerTransaction() {
 						className="fixed bottom-5 left-1/2 z-50 w-full max-w-[360px] -translate-x-1/2 px-5"
 					>
 						<div className="flex items-center justify-between gap-[14px] rounded-full bg-[#FFFFFF33] p-[10px_14px] pl-6 backdrop-blur-md">
-							<div>
-								{/* <p className="text-xl font-semibold leading-[30px]">
+							{/* <div>
+								<p className="text-xl font-semibold leading-[30px]">
 									{rupiahFormat(
 										detailPrice.total,
 									)}
-								</p> */}
+								</p>
 
 								<span className="mt-[2px] text-sm font-normal">
 									Grand
 									Total
 								</span>
-							</div>
+							</div> */}
 
 							<button
 								type="button"
