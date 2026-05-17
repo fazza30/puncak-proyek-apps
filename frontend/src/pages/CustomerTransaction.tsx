@@ -695,18 +695,13 @@ export default function CustomerTransaction() {
 									isPending
 								}
 								className="
-									group
-									flex
-									items-center
-									justify-center
-									rounded-full
-									bg-[#FFFFFF33]
-									p-[10px_14px]
-									backdrop-blur-md
+									bg-transparent
+									font-bold
+									uppercase
+									text-white
 									transition-all
 									duration-300
-									hover:bg-white
-									hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]
+									group-hover:text-black
 								"
 							>
 								{isPending
