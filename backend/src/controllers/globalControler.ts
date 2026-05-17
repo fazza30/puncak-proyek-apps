@@ -42,7 +42,7 @@ const generateSeats = () => {
 	const seats = [];
 
 	const rows = [
-		"A",
+		// "A",
 		"B",
 		"C",
 		"D",
