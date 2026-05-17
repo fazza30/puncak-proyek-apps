@@ -13,7 +13,7 @@ export type TheaterValues = z.infer<typeof theaterSchema>;
 export const getTheaters = (
 	type: "admin" | "customer" = "admin",
 ): Promise<BaseResponse<Theater[]>> =>
-	privateInstance.get(`/api/${type}/theaters`).then((res) => res.data);
+	privateInstance.get(`/${type}/theaters`).then((res) => res.data);
 
 export const createTheater = (data: TheaterValues) =>
 	privateInstance.post("/admin/theaters", data).then((res) => res.data);
