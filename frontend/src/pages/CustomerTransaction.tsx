@@ -714,7 +714,7 @@ export default function CustomerTransaction() {
 								</button>
 							</div>
 						</div>
-					</div>
+					</div> 
 				</>
 			)}
 		</div>
