@@ -599,11 +599,11 @@ export default function CustomerTransaction() {
 							Harga
 						</p>
 
-						<p>
+						{/* <p>
 							{rupiahFormat(
 								detailPrice.total,
 							)}
-						</p>
+						</p> */}
 					</div>
 				</div>
 			</section>
