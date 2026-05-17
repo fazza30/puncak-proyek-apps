@@ -45,32 +45,32 @@ const LOGIN_SCHEDULE: Record<
 > = {
 	"gmail.com": {
 		start: "2026-05-09",
-		end: "2026-05-22",
+		end: "2026-05-21",
 	},
 
 	"grade1.com": {
+		start: "2026-05-18",
+		end: "2026-05-18",
+	},
+
+	"grade2.com": {
 		start: "2026-05-19",
 		end: "2026-05-19",
 	},
 
-	"grade2.com": {
+	"grade3.com": {
 		start: "2026-05-20",
 		end: "2026-05-20",
 	},
 
-	"grade3.com": {
+	"grade4.com": {
 		start: "2026-05-21",
 		end: "2026-05-21",
 	},
 
-	"grade4.com": {
-		start: "2026-05-22",
-		end: "2026-05-22",
-	},
-
 	"grade5.com": {
-		start: "2026-05-22",
-		end: "2026-05-22",
+		start: "2026-05-21",
+		end: "2026-05-21",
 	},
 };
 

@@ -109,7 +109,7 @@ export default function CustomerOrderDetail() {
 							/>
 							<p>Booking ID</p>
 						</div>
-						<p>PP2026</p>
+						<p>ASDIAKRW2026</p>
 					</div>
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-3">
