@@ -11,7 +11,7 @@ export default function AdminMovie() {
 	const movies = useLoaderData() as Movie[];
 
 	return (
-		<>
+		<> 
 			<TitleHeading title="List Movies" />
 			<div>
 				<Button asChild className="mb-3">
