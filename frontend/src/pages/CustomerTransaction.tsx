@@ -594,17 +594,17 @@ export default function CustomerTransaction() {
 						</p>
 					</div>
 
-					<div className="flex items-center justify-between">
+					{/* <div className="flex items-center justify-between">
 						<p>
 							Harga
 						</p>
 
-						{/* <p>
+						<p>
 							{rupiahFormat(
 								detailPrice.total,
 							)}
-						</p> */}
-					</div>
+						</p>
+					</div> */}
 				</div>
 			</section>
 
@@ -672,11 +672,11 @@ export default function CustomerTransaction() {
 					>
 						<div className="flex items-center justify-between gap-[14px] rounded-full bg-[#FFFFFF33] p-[10px_14px] pl-6 backdrop-blur-md">
 							<div>
-								<p className="text-xl font-semibold leading-[30px]">
+								{/* <p className="text-xl font-semibold leading-[30px]">
 									{rupiahFormat(
 										detailPrice.total,
 									)}
-								</p>
+								</p> */}
 
 								<span className="mt-[2px] text-sm font-normal">
 									Grand
