@@ -393,6 +393,26 @@ const adminRoutes: RouteObject[] =
 				},
 
 				/**
+				 * CUSTOMERS
+				 */
+				{
+					path: "/admin/customers/create",
+
+					loader:
+						async () => {
+							adminGuard();
+
+							const customers =
+								await getCustomers();
+
+							return customers.data;
+						},
+
+					element:
+						<AdminCustomer />,
+				},
+
+				/**
 				 * TRANSACTIONS
 				 */
 				{
