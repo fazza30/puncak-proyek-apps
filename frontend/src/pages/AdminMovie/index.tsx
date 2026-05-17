@@ -23,5 +23,5 @@ export default function AdminMovie() {
 				<DataTable columns={columns} data={movies} />
 			</div>
 		</>
-	);
+	); 
 }
