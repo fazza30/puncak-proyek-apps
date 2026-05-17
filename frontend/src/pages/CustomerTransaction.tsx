@@ -703,7 +703,7 @@ export default function CustomerTransaction() {
 									duration-300
 									group-hover:text-black
 								" 
-							>
+							> 
 								{isPending
 									? "Processing..."
 									: "Pay Now"}
