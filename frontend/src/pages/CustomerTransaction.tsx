@@ -670,11 +670,30 @@ export default function CustomerTransaction() {
 						id="Bottom-Nav"
 						className="fixed bottom-5 left-1/2 z-50 w-full max-w-[360px] -translate-x-1/2 px-5"
 					>
-						<div
-							id="Bottom-Nav"
-							className="fixed bottom-5 left-1/2 z-50 w-full max-w-[360px] -translate-x-1/2 px-5"
+						<div 
+							className="
+								group
+								flex
+								items-center
+								justify-center
+								rounded-full
+								bg-[#FFFFFF33]
+								p-[10px_14px]
+								backdrop-blur-md
+								transition-all
+								duration-300
+								hover:bg-white
+								hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]
+							"
 						>
-							<div
+							<button
+								type="button"
+								onClick={
+									handleTransaction
+								}
+								disabled={
+									isPending
+								}
 								className="
 									group
 									flex
@@ -690,31 +709,12 @@ export default function CustomerTransaction() {
 									hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]
 								"
 							>
-								<button
-									type="button"
-									onClick={
-										handleTransaction
-									}
-									disabled={
-										isPending
-									}
-									className="
-										bg-transparent
-										font-bold
-										uppercase
-										text-white
-										transition-all
-										duration-300
-										group-hover:text-black
-									"
-								>
-									{isPending
+								{isPending
 									? "Processing..."
 									: "Pay Now"}
-								</button>
-							</div>
+							</button>
 						</div>
-					</div> 
+					</div>
 				</>
 			)}
 		</div>
