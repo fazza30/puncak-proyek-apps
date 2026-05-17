@@ -390,7 +390,7 @@ const adminRoutes: RouteObject[] =
 
 					element:
 						<AdminCustomer />,
-				},
+				}, 
 
 				/**
 				 * CUSTOMERS 
