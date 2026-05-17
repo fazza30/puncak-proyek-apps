@@ -670,34 +670,49 @@ export default function CustomerTransaction() {
 						id="Bottom-Nav"
 						className="fixed bottom-5 left-1/2 z-50 w-full max-w-[360px] -translate-x-1/2 px-5"
 					>
-						<div className="flex items-center justify-between gap-[14px] rounded-full bg-[#FFFFFF33] p-[10px_14px] pl-6 backdrop-blur-md">
-							{/* <div>
-								<p className="text-xl font-semibold leading-[30px]">
-									{rupiahFormat(
-										detailPrice.total,
-									)}
-								</p>
-
-								<span className="mt-[2px] text-sm font-normal">
-									Grand
-									Total
-								</span>
-							</div> */}
-
-							<button
-								type="button"
-								onClick={
-									handleTransaction
-								}
-								disabled={
-									isPending
-								}
-								className="rounded-full bg-white px-[18px] py-[12px] font-bold text-premiere-black transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+						<div
+							id="Bottom-Nav"
+							className="fixed bottom-5 left-1/2 z-50 w-full max-w-[360px] -translate-x-1/2 px-5"
+						>
+							<div
+								className="
+									group
+									flex
+									items-center
+									justify-center
+									rounded-full
+									bg-[#FFFFFF33]
+									p-[10px_14px]
+									backdrop-blur-md
+									transition-all
+									duration-300
+									hover:bg-white
+									hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]
+								"
 							>
-								{isPending
+								<button
+									type="button"
+									onClick={
+										handleTransaction
+									}
+									disabled={
+										isPending
+									}
+									className="
+										bg-transparent
+										font-bold
+										uppercase
+										text-white
+										transition-all
+										duration-300
+										group-hover:text-black
+									"
+								>
+									{isPending
 									? "Processing..."
 									: "Pay Now"}
-							</button>
+								</button>
+							</div>
 						</div>
 					</div>
 				</>
