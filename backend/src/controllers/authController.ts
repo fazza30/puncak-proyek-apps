@@ -343,7 +343,7 @@ export const login =
 							status:
 								"failed",
 
-							message: `Akun ini hanya bisa login dari ${schedule.start} sampai ${schedule.end}`,
+							message: `Akun ini hanya bisa login pada tanggal ${schedule.start}`,
 
 							data: null,
 						});
