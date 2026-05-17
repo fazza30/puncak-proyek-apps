@@ -702,7 +702,7 @@ export default function CustomerTransaction() {
 									transition-all
 									duration-300
 									group-hover:text-black
-								"
+								" 
 							>
 								{isPending
 									? "Processing..."
