@@ -25,11 +25,11 @@ const GENRE_SHOWTIME_MAP: Record<
 	string,
 	string[]
 > = {
-	"Grade 1": ["07:00"],
-	"Grade 2": ["08:00"],
-	"Grade 3": ["09:00"],
-	"Grade 4": ["10:00"],
-	"Grade 5": ["11:00"],
+	"Grade 1": ["06:30"],
+	"Grade 2": ["09:00"],
+	"Grade 3": ["11:10"],
+	"Grade 4": ["13:20"],
+	"Grade 5": ["15:20"],
 };
 
 /**
