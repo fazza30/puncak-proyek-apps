@@ -44,8 +44,8 @@ const LOGIN_SCHEDULE: Record<
 	}
 > = {
 	"gmail.com": {
-		start: "2026-05-09",
-		end: "2026-05-21",
+		start: "2026-05-18T20:26:00",
+		end: "2026-05-21T23:59:00",
 	},
 
 	"grade1.com": {
@@ -303,31 +303,72 @@ export const login =
 						});
 				}
 
-				const today =
-					getTodayWIB();
+				/**
+				 * ==================================================
+				 * LOGIN SCHEDULE CHECK
+				 * ==================================================
+				 */
 
 				const schedule =
 					LOGIN_SCHEDULE[
 						domain
 					];
 
+				/**
+				 * WIB CURRENT TIME
+				 */
 				const currentDate =
 					new Date(
-						today,
+						Date.now() +
+							7 *
+								60 *
+								60 *
+								1000,
 					);
 
+				/**
+				 * PARSE DATE
+				 * support:
+				 * - 2026-05-18
+				 * - 2026-05-18T15:00:00
+				 */
+				const parseScheduleDate = (
+					dateStr: string,
+					isEnd = false,
+				) => {
+					/**
+					 * DATE ONLY
+					 */
+					if (
+						!dateStr.includes(
+							"T",
+						)
+					) {
+						return new Date(
+							isEnd
+								? `${dateStr}T23:59:59`
+								: `${dateStr}T00:00:00`,
+						);
+					}
+
+					return new Date(
+						dateStr,
+					);
+				};
+
 				const startDate =
-					new Date(
+					parseScheduleDate(
 						schedule.start,
 					);
 
 				const endDate =
-					new Date(
+					parseScheduleDate(
 						schedule.end,
+						true,
 					);
 
 				/**
-				 * LOGIN DATE INVALID
+				 * LOGIN INVALID
 				 */
 				if (
 					currentDate <
@@ -343,7 +384,8 @@ export const login =
 							status:
 								"failed",
 
-							message: `Akun ini hanya bisa login pada tanggal ${schedule.start}`,
+							message:
+								`Akun hanya bisa login pada tanggal ${schedule.start}`,
 
 							data: null,
 						});
