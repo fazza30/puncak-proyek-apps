@@ -49,8 +49,8 @@ const LOGIN_SCHEDULE: Record<
 	},
 
 	"grade1.com": {
-		start: "2026-05-18T15:00:00",
-		end: "2026-05-18T23:59:00",
+		start: "2026-05-18",
+		end: "2026-05-18",
 	},
 
 	"grade2.com": {
