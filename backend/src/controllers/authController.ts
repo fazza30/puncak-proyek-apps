@@ -44,7 +44,7 @@ const LOGIN_SCHEDULE: Record<
 	}
 > = {
 	"gmail.com": {
-		start: "2026-05-18T20:26:00",
+		start: "2026-05-18T20:30:00",
 		end: "2026-05-21T23:59:00",
 	},
 
