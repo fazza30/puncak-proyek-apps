@@ -51,6 +51,7 @@ const generateSeats = () => {
 		"G",
 		"H",
 		"I",
+		"J"
 	];
 
 	for (const row of rows) {
