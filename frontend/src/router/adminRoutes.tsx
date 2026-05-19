@@ -382,10 +382,10 @@ const adminRoutes: RouteObject[] =
 						async () => {
 							adminGuard();
 
-							const transactions =
-								await getTransactions();
+							const customers =
+								await getCustomers();
 
-							return transactions.data;
+							return customers.data;
 						},
 
 					element:
