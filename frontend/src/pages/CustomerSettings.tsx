@@ -8,46 +8,42 @@ export default function CustomerSettings() {
 	const auth = getSession();
 
 	const logout =
-	async () => {
-		try {
-			await logoutApi();
-		} catch (
-			error
-		) {
-			console.log(
-				error,
-			);
-		}
+		async () => {
+			try {
+				await logoutApi();
+			} catch (
+				error
+			) {
+				console.log(
+					error,
+				);
+			}
 
-		/**
-		 * realtime logout
-		 */
-		if (auth?.id) {
-			socket.emit(
-				"user-logout",
-				auth.id,
-			);
-		}
+			/**
+			 * realtime logout
+			 */
+			if (auth?.id) {
+				socket.emit(
+					"user-logout",
+					auth.id,
+				);
+			}
 
-		/**
-		 * disconnect socket
-		 */
-		socket.disconnect();
+			/**
+			 * delay disconnect
+			 */
+			setTimeout(() => {
+				socket.disconnect();
 
-		/**
-		 * clear session
-		 */
-		secureLocalStorage.removeItem(
-			SESSION_KEY,
-		);
+				secureLocalStorage.removeItem(
+					SESSION_KEY,
+				);
 
-		/**
-		 * redirect
-		 */
-		window.location.replace(
-			"/sign-in",
-		);
-	};
+				window.location.replace(
+					"/sign-in",
+				);
+			}, 300);
+		};
 
 	return (
 		<div
