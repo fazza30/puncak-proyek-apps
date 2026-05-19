@@ -169,8 +169,12 @@ export default function CustomerSignIn() {
 							window.location.pathname,
 
 						tokenExpiredAt:
-							response.data
-								.tokenExpiredAt,
+							new Date(
+								Date.now() +
+									10 *
+										60 *
+										1000,
+							).toISOString(),
 					},
 				);
 

@@ -176,10 +176,6 @@ io.on("connection", async (socket) => {
 				onlineUsers.get(
 					userId,
 				);
-			
-			loginAt:
-				existingUser?.loginAt ??
-				Date.now(),
 
 			onlineUsers.set(
 				userId,
@@ -198,6 +194,7 @@ io.on("connection", async (socket) => {
 						socket.id,
 
 					loginAt:
+						existingUser?.loginAt ??
 						Date.now(),
 
 					lastActivity:
