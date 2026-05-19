@@ -172,13 +172,20 @@ export const transactionTicket =
 			 */
 
 			const bookedSeat =
-				await TransactionSeat.findOne(
-					{
-						seat:
-							parse
-								.seats[0],
+				await TransactionSeat.findOne({
+					seat: {
+						$in: parse.seats,
 					},
-				);
+
+					movie:
+						parse.movieId,
+
+					theater:
+						parse.theaterId,
+
+					date:
+						parse.date,
+				});
 
 			if (
 				bookedSeat
@@ -242,15 +249,21 @@ export const transactionTicket =
 
 			for (const seat of parse.seats) {
 				const newSeat =
-					new TransactionSeat(
-						{
-							transaction:
-								transaction.id,
+					new TransactionSeat({
+						transaction:
+							transaction.id,
 
-							seat:
-								seat,
-						},
-					);
+						seat,
+
+						movie:
+							parse.movieId,
+
+						theater:
+							parse.theaterId,
+
+						date:
+							parse.date,
+					});
 
 				await newSeat.save();
 
