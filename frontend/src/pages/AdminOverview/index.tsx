@@ -32,6 +32,16 @@ export default function AdminOverview() {
 	>([]);
 
 	/**
+	 * realtime rerender
+	 */
+	const [
+		currentTime,
+		setCurrentTime,
+	] = useState(
+		Date.now(),
+	);
+
+	/**
 	 * ==================================================
 	 * SOCKET REALTIME
 	 * ==================================================
@@ -67,6 +77,27 @@ export default function AdminOverview() {
 		return () => {
 			socket.off(
 				"online-users",
+			);
+		};
+	}, []);
+
+	/**
+	 * ==================================================
+	 * REALTIME TIMER
+	 * ==================================================
+	 */
+
+	useEffect(() => {
+		const interval =
+			setInterval(() => {
+				setCurrentTime(
+					Date.now(),
+				);
+			}, 1000);
+
+		return () => {
+			clearInterval(
+				interval,
 			);
 		};
 	}, []);
@@ -128,7 +159,7 @@ export default function AdminOverview() {
 
 	const remaining =
 		expiredTime -
-		Date.now();
+		currentTime;
 
 	/**
 	 * expired
@@ -293,8 +324,7 @@ export default function AdminOverview() {
 											<td className="px-4 py-4 text-sm">
 												{Math.floor(
 													(Date.now() -
-														user.lastActivity) /
-														1000,
+														user.lastActivity)
 												)}
 												s ago
 											</td>
