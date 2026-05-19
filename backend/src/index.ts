@@ -136,24 +136,24 @@ io.on("connection", async (socket) => {
 
 	// handle user login
 	socket.on(
-	"join-admin-room",
-	() => {
-		socket.join(
-			"admin-room",
-		);
+		"join-admin-room",
+		() => {
+			socket.join(
+				"admin-room",
+			);
 
-		console.log(
-			"Admin joined room",
-		);
+			console.log(
+				"Admin joined room",
+			);
 
-		socket.emit(
-			"online-users",
-			Array.from(
-				onlineUsers.values(),
-			),
-		);
-	},
-);
+			socket.emit(
+				"online-users",
+				Array.from(
+					onlineUsers.values(),
+				),
+			);
+		},
+	);
 
 	// handle user online
 	socket.on(
@@ -256,6 +256,29 @@ io.on("connection", async (socket) => {
 				Array.from(
 					onlineUsers.values(),
 				),
+			);
+		},
+	);
+
+	socket.on(
+		"user-logout",
+		(userId) => {
+			onlineUsers.delete(
+				userId,
+			);
+
+			io.to(
+				"admin-room",
+			).emit(
+				"online-users",
+				Array.from(
+					onlineUsers.values(),
+				),
+			);
+
+			console.log(
+				"User logout:",
+				userId,
 			);
 		},
 	);

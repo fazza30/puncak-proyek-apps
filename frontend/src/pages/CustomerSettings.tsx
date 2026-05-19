@@ -1,4 +1,5 @@
 import BottomBar from "@/components/BottomBar";
+import { socket } from "@/lib/socket";
 import { getSession, SESSION_KEY } from "@/lib/utils";
 import { logoutApi } from "@/services/auth/auth.service";
 import secureLocalStorage from "react-secure-storage";
@@ -18,10 +19,31 @@ export default function CustomerSettings() {
 			);
 		}
 
+		/**
+		 * realtime logout
+		 */
+		if (auth?.id) {
+			socket.emit(
+				"user-logout",
+				auth.id,
+			);
+		}
+
+		/**
+		 * disconnect socket
+		 */
+		socket.disconnect();
+
+		/**
+		 * clear session
+		 */
 		secureLocalStorage.removeItem(
 			SESSION_KEY,
 		);
 
+		/**
+		 * redirect
+		 */
 		window.location.replace(
 			"/sign-in",
 		);
