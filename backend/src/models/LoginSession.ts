@@ -10,7 +10,7 @@ const loginSessionSchema = new mongoose.Schema(
 
 	token: String,
 
-	expiresAt: {
+	tokenExpiredAt: {
 		type: Date,
 		required: true,
 	},
@@ -21,7 +21,7 @@ const loginSessionSchema = new mongoose.Schema(
 );
 
 loginSessionSchema.index(
-{ expiresAt: 1 },
+{ tokenExpiredAt: 1 },
 { expireAfterSeconds: 0 }
 );
 

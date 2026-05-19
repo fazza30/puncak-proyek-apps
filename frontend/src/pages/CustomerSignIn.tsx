@@ -150,6 +150,30 @@ export default function CustomerSignIn() {
 					response.data,
 				);
 
+				/**
+				 * realtime online user
+				 */
+				socket.emit(
+					"user-online",
+					{
+						userId:
+							response.data.id,
+
+						name:
+							response.data.name,
+
+						email:
+							response.data.email,
+
+						currentPage:
+							window.location.pathname,
+
+						tokenExpiredAt:
+							response.data
+								.tokenExpiredAt,
+					},
+				);
+
 				toast.success(
 					"Login berhasil",
 				);

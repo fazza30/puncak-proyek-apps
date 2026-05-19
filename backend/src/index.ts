@@ -134,6 +134,97 @@ export const io = new Server(server, {
 io.on("connection", async (socket) => {
 	console.log("User connected:", socket.id);
 
+	// handle user online
+	socket.on(
+		"user-online",
+		(data) => {
+			const {
+				userId,
+				name,
+				email,
+				currentPage,
+				tokenExpiredAt,
+			} = data;
+
+			const existingUser =
+				onlineUsers.get(
+					userId,
+				);
+			
+			loginAt:
+				existingUser?.loginAt ??
+				Date.now(),
+
+			onlineUsers.set(
+				userId,
+				{
+					userId,
+
+					name,
+
+					email,
+
+					currentPage,
+
+					tokenExpiredAt,
+
+					socketId:
+						socket.id,
+
+					loginAt:
+						Date.now(),
+
+					lastActivity:
+						Date.now(),
+				},
+			);
+
+			io.emit(
+				"online-users",
+				Array.from(
+					onlineUsers.values(),
+				),
+			);
+
+			console.log(
+				"Online user:",
+				name,
+			);
+		},
+	);
+
+	// update current page and last activity
+	socket.on(
+		"page-change",
+		(data) => {
+			const user =
+				onlineUsers.get(
+					data.userId,
+				);
+
+			if (!user)
+				return;
+
+			user.currentPage =
+				data.currentPage;
+
+			user.lastActivity =
+				Date.now();
+
+			onlineUsers.set(
+				data.userId,
+				user,
+			);
+
+			io.emit(
+				"online-users",
+				Array.from(
+					onlineUsers.values(),
+				),
+			);
+		},
+	);
+
 	socket.on(
 		"register-user",
 		(userId) => {
@@ -270,6 +361,17 @@ io.on("connection", async (socket) => {
 						}
 					}
 
+					onlineUsers.delete(
+						userId,
+					);
+
+					io.emit(
+						"online-users",
+						Array.from(
+							onlineUsers.values(),
+						),
+					);
+
 					disconnectTimers.delete(
 						userId,
 					);
@@ -358,6 +460,21 @@ io.on("connection", async (socket) => {
 					expiredAt,
 				},
 			);
+
+			const onlineUser =
+				onlineUsers.get(
+					userId,
+				);
+
+			if (onlineUser) {
+				onlineUser.lastActivity =
+					Date.now();
+
+				onlineUsers.set(
+					userId,
+					onlineUser,
+				);
+			}
 		},
 	);
 
@@ -371,6 +488,7 @@ io.on("connection", async (socket) => {
 		"release-seat",
 		(data) => {
 			const {
+				userId,
 				movieId,
 				seat,
 			} = data;
@@ -389,6 +507,21 @@ io.on("connection", async (socket) => {
 					seat,
 				},
 			);
+
+			const onlineUser =
+				onlineUsers.get(
+					userId,
+				);
+
+			if (onlineUser) {
+				onlineUser.lastActivity =
+					Date.now();
+
+				onlineUsers.set(
+					userId,
+					onlineUser,
+				);
+			}
 		},
 	);
 });
@@ -462,4 +595,26 @@ const userSockets =
 	new Map<
 		string,
 		string
+	>();
+
+const onlineUsers =
+	new Map<
+		string,
+		{
+			userId: string;
+
+			name: string;
+
+			email: string;
+
+			currentPage: string;
+
+			loginAt: number;
+
+			tokenExpiredAt: string;
+
+			socketId: string;
+
+			lastActivity: number;
+		}
 	>();

@@ -5,5 +5,5 @@ export interface LoginResponse {
 	role: string;
 	photoUrl: string;
 	token: string;
-	expiresAt: string;
+	tokenExpiredAt: string;
 }

@@ -247,6 +247,17 @@ export default function SelectSeat() {
 			auth?.id,
 		);
 
+		socket.emit(
+			"page-change",
+			{
+				userId:
+					auth?.id,
+
+				currentPage:
+					window.location.pathname,
+			},
+		);
+
 		/**
 		 * SYNC HOLDING SEATS
 		 */
@@ -379,6 +390,9 @@ export default function SelectSeat() {
 						socket.emit(
 							"release-seat",
 							{
+								userId:
+									auth?.id,
+
 								movieId:
 									detail._id,
 
@@ -459,6 +473,9 @@ export default function SelectSeat() {
 			socket.emit(
 				"release-seat",
 				{
+					userId:
+						auth?.id,
+
 					movieId:
 						detail._id,
 
@@ -492,6 +509,9 @@ export default function SelectSeat() {
 			socket.emit(
 				"release-seat",
 				{
+					userId:
+						auth?.id,
+
 					movieId:
 						detail._id,
 
@@ -504,7 +524,7 @@ export default function SelectSeat() {
 		/**
 		 * HOLD NEW
 		 */
-		const expiresAt =
+		const tokenExpiredAt =
 			Date.now() +
 			3 *
 			60 *
@@ -532,12 +552,12 @@ export default function SelectSeat() {
 				seat,
 
 				expiredAt:
-					expiresAt,
+					tokenExpiredAt,
 			},
 		);
 
 		setExpiredAt(
-			expiresAt,
+			tokenExpiredAt,
 		);
 
 		setSelectedSeat(
@@ -618,6 +638,9 @@ export default function SelectSeat() {
 				socket.emit(
 					"release-seat",
 					{
+						userId:
+							auth?.id,
+
 						movieId:
 							detail._id,
 
