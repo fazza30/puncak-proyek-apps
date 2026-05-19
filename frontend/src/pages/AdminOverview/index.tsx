@@ -271,7 +271,7 @@ export default function AdminOverview() {
 
 						<tbody>
 							{users?.length ===
-							0 ? (
+							0 ? ( 
 								<tr>
 									<td
 										colSpan={
