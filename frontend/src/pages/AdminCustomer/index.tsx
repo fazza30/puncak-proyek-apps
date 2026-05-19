@@ -1,4 +1,5 @@
 import TitleHeading from "@/components/TitleHeading";
+
 import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
@@ -11,6 +12,12 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { Plus } from "lucide-react";
+
+/**
+ * ==================================================
+ * TYPES
+ * ==================================================
+ */
 
 type TransactionData = {
 	user: {
@@ -31,6 +38,12 @@ type TransactionData = {
 	}[];
 };
 
+/**
+ * ==================================================
+ * COMPONENT
+ * ==================================================
+ */
+
 export default function AdminCustomer() {
 	const transactions =
 		useLoaderData() as TransactionData[];
@@ -39,7 +52,7 @@ export default function AdminCustomer() {
 		<>
 			<TitleHeading title="Customer Transactions" />
 
-			<div>
+			<div className="space-y-4">
 				<Button
 					asChild
 					className="mb-3"
@@ -52,7 +65,10 @@ export default function AdminCustomer() {
 
 				<DataTable
 					columns={columns}
-					data={transactions}
+					data={
+						transactions ??
+						[]
+					}
 				/>
 			</div>
 		</>
