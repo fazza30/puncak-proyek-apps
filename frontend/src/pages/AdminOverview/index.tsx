@@ -31,6 +31,16 @@ export default function AdminOverview() {
 		OnlineUser[]
 	>([]);
 
+	const [
+		activeUsers,
+		setActiveUsers,
+	] = useState(0);
+
+	const [
+		maxUsers,
+		setMaxUsers,
+	] = useState(10);
+
 	/**
 	 * realtime rerender
 	 */
@@ -70,7 +80,17 @@ export default function AdminOverview() {
 					data,
 				);
 
-				setUsers(data);
+				setUsers(
+					data.users,
+				);
+
+				setActiveUsers(
+					data.activeUsers,
+				);
+
+				setMaxUsers(
+					data.maxUsers,
+				);
 			},
 		);
 
@@ -209,7 +229,7 @@ export default function AdminOverview() {
 					</p>
 
 					<h2 className="text-2xl font-bold">
-						{users.length}
+						{activeUsers}/{maxUsers}
 					</h2>
 				</div>
 			</div>
@@ -323,8 +343,9 @@ export default function AdminOverview() {
 
 											<td className="px-4 py-4 text-sm">
 												{Math.floor(
-													(Date.now() -
-														user.lastActivity)
+													(currentTime -
+														user.lastActivity) /
+														1000,
 												)}
 												s ago
 											</td>

@@ -137,10 +137,21 @@ io.on("connection", async (socket) => {
 	// handle user login
 	socket.on(
 		"join-admin-room",
-		() => {
+		async () => {
 			socket.join(
 				"admin-room",
 			);
+
+			const activeUsers =
+				await User.countDocuments({
+					role: "customer",
+
+					isLoggedIn: true,
+
+					tokenExpiredAt: {
+						$gt: new Date(),
+					},
+				});
 
 			console.log(
 				"Admin joined room",
@@ -148,9 +159,15 @@ io.on("connection", async (socket) => {
 
 			socket.emit(
 				"online-users",
-				Array.from(
-					onlineUsers.values(),
-				),
+				{
+					users: Array.from(
+						onlineUsers.values(),
+					),
+
+					activeUsers,
+
+					maxUsers: 10,
+				},
 			);
 		},
 	);
@@ -158,7 +175,7 @@ io.on("connection", async (socket) => {
 	// handle user online
 	socket.on(
 		"user-online",
-		(data) => {
+		async (data) => {
 			const {
 				userId,
 				name,
@@ -209,13 +226,30 @@ io.on("connection", async (socket) => {
 				),
 			);
 
+			const activeUsers =
+				await User.countDocuments({
+					role: "customer",
+
+					isLoggedIn: true,
+
+					tokenExpiredAt: {
+						$gt: new Date(),
+					},
+				});
+
 			io.to(
-				"admin-room"
+				"admin-room",
 			).emit(
 				"online-users",
-				Array.from(
-					onlineUsers.values(),
-				),
+				{
+					users: Array.from(
+						onlineUsers.values(),
+					),
+
+					activeUsers,
+
+					maxUsers: 10,
+				},
 			);
 
 			console.log(
@@ -385,7 +419,7 @@ io.on("connection", async (socket) => {
 				return;
 
 			const timer =
-				setTimeout(() => {
+				setTimeout(async () => {
 					for (const [
 						key,
 						value,
@@ -420,11 +454,28 @@ io.on("connection", async (socket) => {
 						userId,
 					);
 
+					const activeUsers =
+						await User.countDocuments({
+							role: "customer",
+
+							isLoggedIn: true,
+
+							tokenExpiredAt: {
+								$gt: new Date(),
+							},
+						});
+
 					io.emit(
 						"online-users",
-						Array.from(
-							onlineUsers.values(),
-						),
+						{
+							users: Array.from(
+								onlineUsers.values(),
+							),
+
+							activeUsers,
+
+							maxUsers: 10,
+						},
 					);
 
 					disconnectTimers.delete(
