@@ -10,8 +10,11 @@ export const getCustomers =
 	) => {
 		try {
 			/**
-			 * all customers
+			 * ==================================================
+			 * GET ALL CUSTOMERS
+			 * ==================================================
 			 */
+
 			const customers =
 				await User.find({
 					role:
@@ -21,74 +24,95 @@ export const getCustomers =
 				);
 
 			/**
-			 * latest transaction
+			 * ==================================================
+			 * GET ALL TRANSACTIONS
+			 * ==================================================
 			 */
-			const formattedCustomers =
-				await Promise.all(
-					customers.map(
-						async (
-							customer,
-						) => {
-							const transaction =
-								await Transaction.findOne(
-									{
-										user:
-											customer._id,
-									},
-								)
-									.populate({
-										path:
-											"movie",
 
-										select:
-											"title",
-									})
-									.populate({
-										path:
-											"theater",
+			const transactions =
+				await Transaction.find()
+					.populate({
+						path:
+							"movie",
 
-										select:
-											"name",
-									})
-									.populate({
-										path:
-											"seats",
+						select:
+							"title",
+					})
+					.populate({
+						path:
+							"theater",
 
-										select:
-											"seat",
-									})
-									.sort({
-										createdAt:
-											-1,
-									});
+						select:
+							"name",
+					})
+					.populate({
+						path:
+							"seats",
 
-							return {
-								id:
-									customer._id,
+						select:
+							"seat",
+					});
 
-								name:
-									customer.name,
+			/**
+			 * ==================================================
+			 * CREATE TRANSACTION MAP
+			 * ==================================================
+			 */
 
-								email:
-									customer.email,
+			const transactionMap =
+				new Map();
 
-								movie:
-									transaction
-										?.movie ??
-									null,
-
-								theater:
-									transaction
-										?.theater ??
-									null,
-
-								seats:
-									transaction
-										?.seats ??
-									[],
-							};
-						},
+			for (const transaction of transactions) {
+				transactionMap.set(
+					String(
+						transaction.user,
 					),
+					transaction,
+				);
+			}
+
+			/**
+			 * ==================================================
+			 * MERGE CUSTOMER + TRANSACTION
+			 * ==================================================
+			 */
+
+			const formattedCustomers =
+				customers.map(
+					(customer) => {
+						const transaction =
+							transactionMap.get(
+								String(
+									customer._id,
+								),
+							);
+
+						return {
+							id:
+								customer._id,
+
+							name:
+								customer.name,
+
+							email:
+								customer.email,
+
+							movie:
+								transaction
+									?.movie ??
+								null,
+
+							theater:
+								transaction
+									?.theater ??
+								null,
+
+							seats:
+								transaction
+									?.seats ??
+								[],
+						};
+					},
 				);
 
 			return res.json({
