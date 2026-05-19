@@ -55,6 +55,11 @@ export default function AdminOverview() {
 		socket.on(
 			"online-users",
 			(data) => {
+				console.log(
+					"ONLINE USERS:",
+					data,
+				);
+
 				setUsers(data);
 			},
 		);
@@ -96,35 +101,60 @@ export default function AdminOverview() {
 	 */
 
 	const getRemainingToken = (
-		expiredAt: string,
-	) => {
-		const diff =
-			new Date(
-				expiredAt,
-			).getTime() -
-			Date.now();
+	tokenExpiredAt?: string,
+) => {
+	if (!tokenExpiredAt) {
+		return "-";
+	}
 
-		if (diff <= 0) {
-			return "Expired";
-		}
+	/**
+	 * convert timestamp
+	 */
+	const expiredTime =
+		new Date(
+			tokenExpiredAt,
+		).getTime();
 
-		const minutes =
-			Math.floor(
-				diff /
-					1000 /
-					60,
-			);
+	/**
+	 * invalid date
+	 */
+	if (
+		isNaN(
+			expiredTime,
+		)
+	) {
+		return "-";
+	}
 
-		const seconds =
-			Math.floor(
-				(diff /
-					1000) %
-					60,
-			);
+	const remaining =
+		expiredTime -
+		Date.now();
 
-		return `${minutes}m ${seconds}s`;
-	};
+	/**
+	 * expired
+	 */
+	if (
+		remaining <= 0
+	) {
+		return "Expired";
+	}
 
+	const minutes =
+		Math.floor(
+			remaining /
+				1000 /
+				60,
+		);
+
+	const seconds =
+		Math.floor(
+			(remaining /
+				1000) %
+				60,
+		);
+
+	return `${minutes}m ${seconds}s`;
+};
 	return (
 		<div className="flex flex-col gap-6">
 			{/* ================================================== */}
