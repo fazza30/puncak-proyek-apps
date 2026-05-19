@@ -2,6 +2,8 @@
 
 import {
 	CircleUser,
+	Clapperboard,
+	DollarSign,
 	Home,
 	LineChart,
 	Menu,
@@ -9,7 +11,10 @@ import {
 	Package2,
 	Search,
 	ShoppingCart,
+	Theater,
+	User,
 	Users,
+	Wallet,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -48,48 +53,58 @@ export default function Header() {
 					<nav className="grid gap-2 text-lg font-medium">
 						<Link
 							to="#"
-							className="flex items-center gap-2 text-lg font-semibold"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
 						>
-							<Package2 className="h-6 w-6" />
-							<span className="sr-only">Acme Inc</span>
-						</Link>
-						<Link
-							to="#"
-							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-						>
-							<Home className="h-5 w-5" />
+							<Home className="h-4 w-4" />
 							Dashboard
 						</Link>
+
 						<Link
-							to="#"
-							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+							to="/admin/genres"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
 						>
-							<ShoppingCart className="h-5 w-5" />
-							Orders
-							<Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-								6
-							</Badge>
+							<Package className="h-4 w-4" />
+							Grade{" "}
 						</Link>
+
 						<Link
-							to="#"
-							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+							to="/admin/theaters"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
 						>
-							<Package className="h-5 w-5" />
-							Products
+							<Theater className="h-4 w-4" />
+							Theaters{" "}
 						</Link>
+
 						<Link
-							to="#"
-							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+							to="/admin/movies"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
 						>
-							<Users className="h-5 w-5" />
-							Customers
+							<Clapperboard className="h-4 w-4" />
+							Film{" "}
 						</Link>
+
 						<Link
-							to="#"
-							className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+							to="/admin/customers"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
 						>
-							<LineChart className="h-5 w-5" />
-							Analytics
+							<User className="h-4 w-4" />
+							Customers{" "}
+						</Link>
+
+						<Link
+							to="/admin/transactions"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+						>
+							<DollarSign className="h-4 w-4" />
+							Transactions{" "}
+						</Link>
+
+						<Link
+							to="/admin/wallet-transactions"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+						>
+							<Wallet className="h-4 w-4" />
+							Wallet Transactions{" "}
 						</Link>
 					</nav>
 				</SheetContent>
