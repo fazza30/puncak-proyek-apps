@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 import TransactionSeat from "../models/TransactionSeat";
+import "../models/Transaction";
 
 const migrateSeats = async () => {
 	try {
 		await mongoose.connect(
-			process.env.MONGO_URI!,
+			process.env.DATABASE_URL!,
 		);
 
 		console.log(

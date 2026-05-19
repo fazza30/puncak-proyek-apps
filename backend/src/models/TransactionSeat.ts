@@ -31,7 +31,7 @@ const transactionSeatSchema =
 			},
 
 			date: {
-				type: Date,
+				type: String,
 			},
 		},
 		{
