@@ -1,13 +1,69 @@
-import type { User } from "@/services/customer/customer.type";
 import type { ColumnDef } from "@tanstack/react-table";
 
-export const columns: ColumnDef<User>[] = [
+type TransactionData = {
+	user: {
+		name: string;
+		email: string;
+	};
+
+	movie: {
+		title: string;
+	};
+
+	theater: {
+		name: string;
+	};
+
+	seats: {
+		seat: string;
+	}[];
+};
+
+export const columns: ColumnDef<TransactionData>[] = [
 	{
-		accessorKey: "name",
 		header: "Name",
+
+		cell: ({ row }) =>
+			row.original.user
+				?.name ?? "-",
 	},
+
 	{
-		accessorKey: "email",
 		header: "Email",
+
+		cell: ({ row }) =>
+			row.original.user
+				?.email ?? "-",
+	},
+
+	{
+		header: "Movie",
+
+		cell: ({ row }) =>
+			row.original.movie
+				?.title ?? "-",
+	},
+
+	{
+		header: "Theater",
+
+		cell: ({ row }) =>
+			row.original.theater
+				?.name ?? "-",
+	},
+
+	{
+		header: "Seat",
+
+		cell: ({ row }) =>
+			row.original.seats
+				?.map(
+					(
+						seat,
+					) =>
+						seat.seat,
+				)
+				.join(", ") ??
+			"-",
 	},
 ];

@@ -50,33 +50,66 @@ export const getWalletTransactions = async (req: Request, res: Response) => {
 	}
 };
 
-export const getTransactions = async (req: Request, res: Response) => {
-	try {
-		const transactions = await Transaction.find()
-			.populate({
-				path: "user",
-				select: "name -_id",
-			})
-			.populate({
-				path: "movie",
-				select: "title -_id",
-			})
-			.populate({
-				path: "theater",
-				select: "name -_id",
-			});
+export const getTransactions =
+	async (
+		req: Request,
+		res: Response,
+	) => {
+		try {
+			const transactions =
+				await Transaction.find()
+					.populate({
+						path: "user",
 
-		return res.json({
-			data: transactions,
-			message: "Success get data",
-			status: "Success",
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(500).json({
-			message: "Failed to get data",
-			data: null,
-			status: "failed",
-		});
-	}
-};
+						select:
+							"name email -_id",
+					})
+					.populate({
+						path: "movie",
+
+						select:
+							"title -_id",
+					})
+					.populate({
+						path: "theater",
+
+						select:
+							"name -_id",
+					})
+					.populate({
+						path: "seats",
+
+						select:
+							"seat -_id",
+					});
+
+			return res.json({
+				data:
+					transactions,
+
+				message:
+					"Success get data",
+
+				status:
+					"Success",
+			});
+		} catch (
+			error
+		) {
+			console.log(
+				error,
+			);
+
+			return res
+				.status(500)
+				.json({
+					message:
+						"Failed to get data",
+
+					data: null,
+
+					status:
+						"failed",
+				});
+		}
+	};
