@@ -134,6 +134,27 @@ export const io = new Server(server, {
 io.on("connection", async (socket) => {
 	console.log("User connected:", socket.id);
 
+	// handle user login
+	socket.on(
+	"join-admin-room",
+	() => {
+		socket.join(
+			"admin-room",
+		);
+
+		console.log(
+			"Admin joined room",
+		);
+
+		socket.emit(
+			"online-users",
+			Array.from(
+				onlineUsers.values(),
+			),
+		);
+	},
+);
+
 	// handle user online
 	socket.on(
 		"user-online",
@@ -145,6 +166,11 @@ io.on("connection", async (socket) => {
 				currentPage,
 				tokenExpiredAt,
 			} = data;
+
+			console.log(
+				"USER ONLINE EVENT:",
+				data,
+			);
 
 			const existingUser =
 				onlineUsers.get(
@@ -179,7 +205,16 @@ io.on("connection", async (socket) => {
 				},
 			);
 
-			io.emit(
+			console.log(
+				"ONLINE USERS:",
+				Array.from(
+					onlineUsers.values(),
+				),
+			);
+
+			io.to(
+				"admin-room"
+			).emit(
 				"online-users",
 				Array.from(
 					onlineUsers.values(),
