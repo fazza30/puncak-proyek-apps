@@ -7,10 +7,9 @@ import type { ColumnDef } from "@tanstack/react-table";
  */
 
 type TransactionData = {
-	user?: {
-		name?: string;
-		email?: string;
-	};
+	name?: string;
+
+	email?: string;
 
 	movie?: {
 		title?: string;
@@ -31,102 +30,79 @@ type TransactionData = {
  * ==================================================
  */
 
-export const columns: ColumnDef<TransactionData>[] = [
-	{
-		accessorKey: "user.name",
+export const columns: ColumnDef<TransactionData>[] =
+	[
+		{
+			accessorKey:
+				"name",
 
-		header: "Name",
+			header:
+				"Name",
+		},
 
-		cell: ({ row }) => (
-			<div className="font-medium">
-				{row.original.user
-					?.name ?? "-"}
-			</div>
-		),
-	},
+		{
+			accessorKey:
+				"email",
 
-	{
-		accessorKey:
-			"user.email",
+			header:
+				"Email",
+		},
 
-		header: "Email",
+		{
+			header:
+				"Movie",
 
-		cell: ({ row }) => (
-			<div className="text-muted-foreground">
-				{row.original.user
-					?.email ?? "-"}
-			</div>
-		),
-	},
-
-	{
-		accessorKey:
-			"movie.title",
-
-		header: "Movie",
-
-		cell: ({ row }) => (
-			<div>
-				{row.original.movie
-					?.title ?? "-"}
-			</div>
-		),
-	},
-
-	{
-		accessorKey:
-			"theater.name",
-
-		header: "Theater",
-
-		cell: ({ row }) => (
-			<div>
-				{row.original
-					.theater
-					?.name ?? "-"}
-			</div>
-		),
-	},
-
-	{
-		id: "seats",
-
-		header: "Seats",
-
-		cell: ({ row }) => {
-			const seats =
+			cell: ({
+				row,
+			}) =>
 				row.original
-					.seats;
+					.movie
+					?.title ??
+				"-",
+		},
 
-			if (
-				!seats ||
-				seats.length ===
-					0
-			) {
-				return "-";
-			}
+		{
+			header:
+				"Theater",
 
-			return (
-				<div className="flex flex-wrap gap-1">
-					{seats.map(
+			cell: ({
+				row,
+			}) =>
+				row.original
+					.theater
+					?.name ??
+				"-",
+		},
+
+		{
+			header:
+				"Seats",
+
+			cell: ({
+				row,
+			}) => {
+				const seats =
+					row.original
+						.seats;
+
+				if (
+					!seats ||
+					seats.length ===
+						0
+				) {
+					return "-";
+				}
+
+				return seats
+					.map(
 						(
 							seat,
-							index,
-						) => (
-							<span
-								key={
-									index
-								}
-								className="rounded-md bg-muted px-2 py-1 text-xs font-medium"
-							>
-								{
-									seat.seat
-								}
-							</span>
-						),
-					)}
-				</div>
-			);
+						) =>
+							seat.seat,
+					)
+					.join(
+						", ",
+					);
+			},
 		},
-	},
-];
+	];
