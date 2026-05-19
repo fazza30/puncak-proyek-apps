@@ -81,15 +81,15 @@ export default function AdminOverview() {
 				);
 
 				setUsers(
-					data.users,
+					data.users ?? [],
 				);
 
 				setActiveUsers(
-					data.activeUsers,
+					data?.activeUsers ?? 0,
 				);
 
 				setMaxUsers(
-					data.maxUsers,
+					data?.maxUsers ?? 10,
 				);
 			},
 		);
@@ -270,7 +270,7 @@ export default function AdminOverview() {
 						</thead>
 
 						<tbody>
-							{users.length ===
+							{users?.length ===
 							0 ? (
 								<tr>
 									<td
@@ -283,7 +283,7 @@ export default function AdminOverview() {
 									</td>
 								</tr>
 							) : (
-								users.map(
+								users?.map(
 									(
 										user,
 									) => (

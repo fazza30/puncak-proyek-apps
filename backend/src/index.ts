@@ -262,7 +262,7 @@ io.on("connection", async (socket) => {
 	// update current page and last activity
 	socket.on(
 		"page-change",
-		(data) => {
+		async (data) => {
 			const user =
 				onlineUsers.get(
 					data.userId,
@@ -282,29 +282,65 @@ io.on("connection", async (socket) => {
 				user,
 			);
 
-			io.emit(
+			const activeUsers =
+				await User.countDocuments({
+					role: "customer",
+
+					isLoggedIn: true,
+
+					tokenExpiredAt: {
+						$gt: new Date(),
+					},
+				});
+
+			io.to(
+				"admin-room",
+			).emit(
 				"online-users",
-				Array.from(
-					onlineUsers.values(),
-				),
+				{
+					users: Array.from(
+						onlineUsers.values(),
+					),
+
+					activeUsers,
+
+					maxUsers: 10,
+				},
 			);
 		},
 	);
 
 	socket.on(
 		"user-logout",
-		(userId) => {
+		async (userId) => {
 			onlineUsers.delete(
 				userId,
 			);
+
+			const activeUsers =
+				await User.countDocuments({
+					role: "customer",
+
+					isLoggedIn: true,
+
+					tokenExpiredAt: {
+						$gt: new Date(),
+					},
+				});
 
 			io.to(
 				"admin-room",
 			).emit(
 				"online-users",
-				Array.from(
-					onlineUsers.values(),
-				),
+				{
+					users: Array.from(
+						onlineUsers.values(),
+					),
+
+					activeUsers,
+
+					maxUsers: 10,
+				},
 			);
 
 			console.log(
