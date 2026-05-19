@@ -10,7 +10,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "import:users": "tsx src/scripts/importUsers.ts"
+    "import:users": "tsx src/scripts/importUsers.ts",
+    "migrate:seats": "tsx src/scripts/migrateSeats.ts"
   },
   "dependencies": {
     "@types/multer": "^2.1.0",
