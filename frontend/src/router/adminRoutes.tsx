@@ -70,6 +70,7 @@ import {
 	getTransactions,
 	getWalletTransactions,
 } from "@/services/customer/customer.service";
+import AdminCustomerForm from "@/pages/AdminCustomer/form";
 
 /**
  * ==================================================
@@ -393,23 +394,19 @@ const adminRoutes: RouteObject[] =
 				},
 
 				/**
-				 * CUSTOMERS 
+				 * CUSTOMERS REGISTER
 				 */
 				{
 					path: "/admin/customers/create",
 
-					loader:
-						async () => {
-							adminGuard();
+					loader: async () => {
+						adminGuard();
 
-							const customers =
-								await getCustomers();
-
-							return customers.data;
-						},
+						return null;
+					},
 
 					element:
-						<AdminCustomer />,
+						<AdminCustomerForm />,
 				},
 
 				/**
