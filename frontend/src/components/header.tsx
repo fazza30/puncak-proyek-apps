@@ -106,6 +106,14 @@ export default function Header() {
 							<Wallet className="h-4 w-4" />
 							Wallet Transactions{" "}
 						</Link>
+
+						<Link
+							to="/admin/seat-maps"
+							className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+						>
+							<Wallet className="h-4 w-4" />
+							Seat Map{" "}
+						</Link>
 					</nav>
 				</SheetContent>
 			</Sheet>

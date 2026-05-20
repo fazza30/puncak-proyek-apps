@@ -71,6 +71,7 @@ import {
 	getWalletTransactions,
 } from "@/services/customer/customer.service";
 import AdminCustomerForm from "@/pages/AdminCustomer/form";
+import AdminSeats from "@/pages/AdminSeat";
 
 /**
  * ==================================================
@@ -447,6 +448,26 @@ const adminRoutes: RouteObject[] =
 
 					element:
 						<AdminWalletTransactions />,
+				},
+
+				/**
+				 * SEAT MAPS
+				 */
+				{
+					path: "/admin/seat-maps",
+
+					loader:
+						async () => {
+							adminGuard();
+
+							const seats =
+								await getCustomers();
+
+							return seats.data;
+						},
+
+					element:
+						<AdminSeats />,
 				},
 			],
 		},
